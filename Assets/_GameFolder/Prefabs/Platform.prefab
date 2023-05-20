@@ -513,8 +513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plateTransform: {fileID: 6923524217818848953}
-  whitePlateObject: {fileID: 6113880235414516713}
   colorObject: {fileID: 3250690102226288029}
+  whitePlateObject: {fileID: 6113880235414516713}
 --- !u!65 &716038126359323062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -523,7 +523,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8528569468860694605}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 0.19895007, z: 3}

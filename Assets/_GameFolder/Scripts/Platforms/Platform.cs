@@ -11,9 +11,16 @@ namespace SplashyGame.Platforms
 
 		public bool IsCollidedPlayer { get; private set; }
 
-		public void OnPlatformCreated(bool isColorObjectOpen, bool isWhitePlateOpen)
+		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen)
 		{
-			IsCollidedPlayer = false;
+			if (isFirstObject)
+			{
+				IsCollidedPlayer = true;
+			}
+			else
+			{
+				IsCollidedPlayer = false;
+			}
 
 			colorObject.SetActive(isColorObjectOpen);
 			whitePlateObject.SetActive(isWhitePlateOpen);

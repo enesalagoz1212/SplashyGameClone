@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using System;
 
 namespace SplashyGame.Managers
 {
@@ -13,8 +13,10 @@ namespace SplashyGame.Managers
 	public class GameManager : MonoBehaviour
 	{
 		public static GameManager Instance { get; private set; }
+
+		public static Action OnGameStarted;
 		
-		public GameState gameState;
+		public GameState GameState { get; private set; }
 
 		private void Awake() 
 		{ 
@@ -31,17 +33,40 @@ namespace SplashyGame.Managers
 
 		private void Start()
 		{
-			gameState = GameState.Start;
+			GameState = GameState.Start;
+		}
+
+		private void Update()
+		{
+			switch (GameState)
+			{
+				case GameState.Start:
+					if (Input.GetMouseButtonDown(0))
+					{
+						OnGameStart();
+					}
+					break;
+				
+				case GameState.Playing:
+					break;
+				
+				case GameState.End:
+					break;
+				
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 
 		public void OnGameStart()
 		{
-			gameState = GameState.Playing;
+			GameState = GameState.Playing;
+			OnGameStarted?.Invoke();
 		}
 
 		public void OnGameEnd()
 		{
-			gameState = GameState.End;
+			GameState = GameState.End;
 		}
 	}
 }

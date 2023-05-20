@@ -20,14 +20,21 @@ namespace SplashyGame.Managers
 
         private void SpawnPrefabs()
         {
-            for (int i = 1; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 float randomXPos = Random.Range(xMin, xMax);
+                if (i == 0)
+                {
+                    randomXPos = 0;
+                }
+                
                 Vector3 spawnPosition = new Vector3(randomXPos, 0.0f, i * zPos);
                 GameObject platform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity, transform);
                 Platform platformScript = platform.GetComponent<Platform>();
                 if (platformScript != null)
                 {
+                    bool isFirstObject = i == 0;
+
                     bool isColorObjectOpen;
                     if (i == 7)
                     {
@@ -48,8 +55,8 @@ namespace SplashyGame.Managers
                     {
                         isWhitePlateOpen = false;
                     }
-                    
-                    platformScript.OnPlatformCreated(isColorObjectOpen, isWhitePlateOpen);
+
+                    platformScript.OnPlatformCreated(isFirstObject, isColorObjectOpen, isWhitePlateOpen);
                 }
             }
         }
