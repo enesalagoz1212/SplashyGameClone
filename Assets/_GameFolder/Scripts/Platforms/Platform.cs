@@ -1,13 +1,15 @@
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 namespace SplashyGame.Platforms
 {
 	public class Platform : MonoBehaviour
 	{
-		public Transform plateTransform;
+		public Transform objectsTransform;
 		public GameObject colorObject;
 		public GameObject whitePlateObject;
+		public TextMeshPro numberEffectText;
 
 		public float onCollidedUpPosY;
 		public float onCollidedUpMoveTime;
@@ -21,6 +23,8 @@ namespace SplashyGame.Platforms
 
 		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen)
 		{
+			numberEffectText.gameObject.SetActive(false);
+			
 			if (isFirstObject)
 			{
 				IsCollidedPlayer = true;
@@ -37,11 +41,30 @@ namespace SplashyGame.Platforms
 		public void OnCollidedPlayer()
 		{
 			IsCollidedPlayer = true;
+			
+			CreateNumberEffect();
+		}
 
-			transform.DOMoveY(onCollidedUpPosY, onCollidedUpMoveTime).SetEase(onCollidedUpMoveEase).OnComplete(
+		private void CreateNumberEffect()
+		{
+			numberEffectText.gameObject.SetActive(true);
+			numberEffectText.transform.localScale = Vector3.zero;
+			numberEffectText.color = Color.white;
+
+			numberEffectText.transform.DOScale(1f, 0.4f).OnComplete(() =>
+			{
+				CreateUpDownMoveEffect();
+				
+				numberEffectText.DOFade(0f, 0.3f).SetDelay(0.2f);
+			});
+		}
+
+		private void CreateUpDownMoveEffect()
+		{
+			objectsTransform.DOMoveY(onCollidedUpPosY, onCollidedUpMoveTime).SetEase(onCollidedUpMoveEase).OnComplete(
 				() =>
 				{
-					transform.DOMoveY(onCollidedDownPosY, onCollidedDownMoveTime).SetEase(onCollidedDownMoveEase);
+					objectsTransform.DOMoveY(onCollidedDownPosY, onCollidedDownMoveTime).SetEase(onCollidedDownMoveEase);
 				});
 		}
 	}
