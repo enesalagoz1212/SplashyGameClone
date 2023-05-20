@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SplashyGame.Controllers
@@ -8,21 +6,19 @@ namespace SplashyGame.Controllers
 	{
 		public GameObject player;
 		public Vector3 offset;
-		void Start()
+		private float _cameraY;
+		
+		private void Start()
 		{
-			offset= transform.position - player.transform.position;
+			_cameraY = transform.position.y;
+			offset = transform.position - player.transform.position;
 		}
-
 
 		private void LateUpdate()
 		{
-			transform.position = player.transform.position + offset;
+			Vector3 position = player.transform.position + offset;
+			position.y = _cameraY;
+			transform.position = position;
 		}
-
-
-
-		
-		
-
 	}
 }
