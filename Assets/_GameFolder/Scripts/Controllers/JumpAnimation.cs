@@ -9,56 +9,33 @@ namespace SplashyGame.Controllers
 {
 	public class JumpAnimation : MonoBehaviour
 	{
-		Platform _platform;
-		
-
 		public Vector3 endPosition;
 
+		public Ease jumpEase;
 		public float jumpPower;
 		public int jumpCount;
 		public float duration;
 
 		private Tween _jumpAnimation;
 
-		private void Awake()
+		private void StartJumpAnimation()
 		{
-			_platform = GetComponentInParent<Platform>();
-		
+			_jumpAnimation = transform.DOLocalJump(endPosition, jumpPower, jumpCount, duration).SetEase(jumpEase);
 		}
-		private void Start()
-		{
-		}
-
-		private void Update()
-		{
-
-		}
-
-		public void StartJumpAnimation()
-		{
-
-			_jumpAnimation = transform.DOLocalJump(endPosition, jumpPower, jumpCount, duration).SetEase(Ease.OutCubic);
-
-		}
-
 
 		private void OnCollisionEnter(Collision collision)
 		{
 			if (collision != null && collision.gameObject.CompareTag("Ground"))
 			{
-
 				StartJumpAnimation();
 				endPosition.z += 5f;
 
 				collision.transform.DOMoveY(1.2f, 0.1f);
-			
 			}
 			else
 			{
 				_jumpAnimation.Kill();
 			}
-
-
 		}
 
 		private void OnTriggerEnter(Collider other)
@@ -71,11 +48,6 @@ namespace SplashyGame.Controllers
 				
 				Debug.Log("White");
 			}
-
-			
 		}
-		
-
 	}
-
 }
