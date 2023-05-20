@@ -9,6 +9,14 @@ namespace SplashyGame.Platforms
 		public GameObject colorObject;
 		public GameObject whitePlateObject;
 
+		public float onCollidedUpPosY;
+		public float onCollidedUpMoveTime;
+		public Ease onCollidedUpMoveEase;
+
+		public float onCollidedDownPosY;
+		public float onCollidedDownMoveTime;
+		public Ease onCollidedDownMoveEase;
+
 		public bool IsCollidedPlayer { get; private set; }
 
 		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen)
@@ -30,7 +38,11 @@ namespace SplashyGame.Platforms
 		{
 			IsCollidedPlayer = true;
 
-			plateTransform.DOMoveY(1.2f, 0.1f);
+			transform.DOMoveY(onCollidedUpPosY, onCollidedUpMoveTime).SetEase(onCollidedUpMoveEase).OnComplete(
+				() =>
+				{
+					transform.DOMoveY(onCollidedDownPosY, onCollidedDownMoveTime).SetEase(onCollidedDownMoveEase);
+				});
 		}
 	}
 }
