@@ -11,10 +11,6 @@ namespace SplashyGame.Controllers
 		public GameManager gameManager;
 
 
-		private void OnTriggerEnter(Collider other)
-		{
-			gameManager.Trigger(gameObject,other.gameObject);
-		}
 
 
 	}

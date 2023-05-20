@@ -2,22 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SplashyGame.Controllers;
+using DG.Tweening;
+
 namespace SplashyGame.Managers
 {
 	public class GameManager : MonoBehaviour
 	{
-		public void Collision(GameObject sourceGo, GameObject targetGo, Vector3 contactPoint)
-		{
+		
 
-		}
-		public void Trigger(GameObject sourceGo ,GameObject targetGo)
+		private void Update()
 		{
 			
-		}
-
-		public void Lose()
-		{
-
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace SplashyGame.Controllers
 		public Vector3 offset;
 		void Start()
 		{
-			offset = transform.position - player.transform.position;
+			offset= transform.position - player.transform.position;
 		}
 
 

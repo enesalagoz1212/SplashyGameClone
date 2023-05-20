@@ -12,7 +12,7 @@ namespace SplashyGame.Controllers
 		[SerializeField] private float movementDuration;
 
 		private bool _isMoving;
-		private Vector3 _previousPosition;
+		public Vector3 _previousPosition;
 		private GameManager _gameManager;
 
 		private void Start()
@@ -42,16 +42,7 @@ namespace SplashyGame.Controllers
 			transform.DOMoveY(_previousPosition.y, movementDuration).SetEase(Ease.InCubic);
 			yield return new WaitForSeconds(movementDuration);
 
-			if (Physics.Raycast(transform.position, Vector3.down, out var hitInfo))
-			{
-				var otherGo = hitInfo.collider.gameObject;
-				_gameManager.Collision(gameObject,otherGo,hitInfo.point);
-			}
-			else
-			{
-				_gameManager.Lose();
-			}
-			_isMoving = false;
+
 
 		}
 	}

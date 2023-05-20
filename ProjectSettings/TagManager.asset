@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Colour
+  - White
+  - Number
+  - Cylinder
+  - Ball
   layers:
   - Default
   - TransparentFX

@@ -7,8 +7,10 @@ namespace SplashyGame.Movements
 {
 	public class PlayerHorizontal : MonoBehaviour
 	{
-		public bool GameActive { get; set; }
-		public float speed = 5f;
+		
+		public float speed = 0.2f;
+		private float firstTouchX;
+
 		void Start()
 		{
 
@@ -17,26 +19,19 @@ namespace SplashyGame.Movements
 
 		void Update()
 		{
-			if (GameActive) return;
-
-			var t = transform;
-			Vector3 horizontalInput = Vector3.right * speed * (Input.GetAxis("Horizontal"));
-			var mouseHorizontalInput = Input.GetAxis("Mouse X") * Time.deltaTime * 50;
-
-			if (Input.GetAxis("Mouse X") != 0)
+			float diff = 0;
+			if (Input.GetMouseButtonDown(0))
 			{
-
-				transform.DOMoveX(t.position.x + mouseHorizontalInput, 0.1f);
-				return;
+				 firstTouchX = Input.mousePosition.x;
+			}			
+			else if(Input.GetMouseButton(0))
+			{
+				float lastTouch = Input.mousePosition.x;
+				diff = lastTouch-firstTouchX;
+				firstTouchX = lastTouch;
 			}
-			if ((Input.GetAxis("Horizontal") == 0)) return;
-
-
-			transform.DOMove((t.position + horizontalInput), 0.3f);
-
-
-
-
+			transform.position += new Vector3(diff * Time.deltaTime*speed, 0, 0);
+			
 		}
 	}
 }
