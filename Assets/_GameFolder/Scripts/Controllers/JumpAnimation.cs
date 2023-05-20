@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using TMPro;
 using SplashyGame.Platforms;
 
 namespace SplashyGame.Controllers
@@ -25,12 +22,16 @@ namespace SplashyGame.Controllers
 
 		private void OnCollisionEnter(Collision collision)
 		{
-			if (collision != null && collision.gameObject.CompareTag("Ground"))
+			if (collision.gameObject.CompareTag("Platform"))
 			{
-				StartJumpAnimation();
-				endPosition.z += 5f;
-
-				collision.transform.DOMoveY(1.2f, 0.1f);
+				var platform = collision.gameObject.GetComponent<Platform>();
+				if (platform != null && !platform.IsCollidedPlayer)
+				{
+					StartJumpAnimation();
+					endPosition.z += 5f;
+					
+					platform.OnCollidedPlayer();
+				}
 			}
 			else
 			{

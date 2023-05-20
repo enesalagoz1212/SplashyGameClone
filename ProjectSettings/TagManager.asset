@@ -10,6 +10,7 @@ TagManager:
   - Number
   - Cylinder
   - Ball
+  - Platform
   layers:
   - Default
   - TransparentFX
