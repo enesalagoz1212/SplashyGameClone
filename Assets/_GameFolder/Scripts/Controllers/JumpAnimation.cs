@@ -69,6 +69,10 @@ namespace SplashyGame.Controllers
 			{
 				Debug.Log("White");
 			}
+			if (other!=null && other.gameObject.CompareTag("Diamondo"))
+			{
+				Destroy(other.gameObject);
+			}
 		}
 
 		private void Update()

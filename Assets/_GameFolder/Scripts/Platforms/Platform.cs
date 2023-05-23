@@ -9,6 +9,7 @@ namespace SplashyGame.Platforms
 		public Transform objectsTransform;
 		public GameObject colorObject;
 		public GameObject whitePlateObject;
+		public GameObject diamondo;
 		public TextMeshPro numberEffectText;
 
 		public float onCollidedUpPosY;
@@ -21,7 +22,7 @@ namespace SplashyGame.Platforms
 
 		public bool IsCollidedPlayer { get; private set; }
 
-		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen)
+		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen,bool isDiamondo)
 		{
 			numberEffectText.gameObject.SetActive(false);
 			
@@ -36,6 +37,7 @@ namespace SplashyGame.Platforms
 
 			colorObject.SetActive(isColorObjectOpen);
 			whitePlateObject.SetActive(isWhitePlateOpen);
+			diamondo.SetActive(isDiamondo);
 		}
 
 		public void OnCollidedPlayer()

@@ -11,6 +11,7 @@ TagManager:
   - Cylinder
   - Ball
   - Platform
+  - Diamondo
   layers:
   - Default
   - TransparentFX
