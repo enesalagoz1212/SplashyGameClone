@@ -6,6 +6,7 @@ namespace SplashyGame.Movements
 {
 	public class PlayerHorizontal : MonoBehaviour
 	{
+		public Transform childTransform;
 		public float speed = 0.2f;
 		private float firstTouchX;
 

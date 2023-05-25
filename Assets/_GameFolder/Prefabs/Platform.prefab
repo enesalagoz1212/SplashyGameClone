@@ -938,6 +938,7 @@ MonoBehaviour:
   diamondo: {fileID: 1085365913573705935}
   flag: {fileID: 8358915990610466359}
   numberEffectText: {fileID: 1622459596}
+  plateRenderer: {fileID: 651524216611104668}
   onCollidedUpPosY: 1.2
   onCollidedUpMoveTime: 0.3
   onCollidedUpMoveEase: 3

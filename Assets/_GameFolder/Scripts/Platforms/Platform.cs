@@ -10,15 +10,13 @@ namespace SplashyGame.Platforms
 	{
 		//CubeMaterial _cubeMaterial;
 
-
-
 		public Transform objectsTransform;
 		public GameObject colorObject;
 		public GameObject whitePlateObject;
 		public GameObject diamondo;
 		public GameObject flag;
 		public TextMeshPro numberEffectText;
-
+		public MeshRenderer plateRenderer;
 
 
 		public float onCollidedUpPosY;
@@ -93,6 +91,14 @@ namespace SplashyGame.Platforms
 				{
 					objectsTransform.DOMoveY(onCollidedDownPosY, onCollidedDownMoveTime).SetEase(onCollidedDownMoveEase);
 				});
+		}
+		
+		public void PlatformScalingColoringAnimation(Color color)
+		{
+			transform.DOScale(new Vector3(1.3f, transform.localScale.y, 1.2f), 0.2f).OnComplete(() =>
+			{
+				plateRenderer.material.DOColor(color, 0.5f);
+			});
 		}
 
 		//private void OnTriggerEnter(Collider other)

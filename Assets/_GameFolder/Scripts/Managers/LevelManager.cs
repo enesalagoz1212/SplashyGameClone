@@ -3,35 +3,43 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using SplashyGame.Movements;
 
 namespace SplashyGame.Managers
 {
 	public class LevelManager : MonoBehaviour
 	{
-
+		public static LevelManager Instance { get; private set; }
+		
 		public GameObject platformPrefab;
-		public GameObject ballObject;
+
+		public PlayerHorizontal playerHorizontal;
 
 		public float zPos;
 		public float xMin;
 		public float xMax;
 		public int count;
 
-		List<GameObject> spawnPlatform;
-
+		private List<Platform> _createdPlatforms = new List<Platform>();
 
 		public Color targetColor;
-		public float colorDuration = 1f;
-
-		Renderer _platform;
+		
+		private void Awake() 
+		{ 
+			// If there is an instance, and it's not me, delete myself.
+			if (Instance != null && Instance != this) 
+			{ 
+				Destroy(this); 
+			} 
+			else 
+			{ 
+				Instance = this; 
+			} 
+		}
 
 		private void Start()
 		{
-			spawnPlatform = new List<GameObject>();
 			SpawnPrefabs();
-
-			_platform = GetComponent<Renderer>();
-			
 		}
 
 		private void SpawnPrefabs()
@@ -46,10 +54,10 @@ namespace SplashyGame.Managers
 
 				Vector3 spawnPosition = new Vector3(randomXPos, 0.0f, i * zPos);
 				GameObject platform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity, transform);
-
-				spawnPlatform.Add(platform);
-
+				
 				Platform platformScript = platform.GetComponent<Platform>();
+				
+				_createdPlatforms.Add(platformScript);
 
 				if (platformScript != null)
 				{
@@ -103,39 +111,15 @@ namespace SplashyGame.Managers
 
 		public void ScalePlatforms()
 		{
-			
-			GameObject firstPlatform = spawnPlatform[0];
-
-			for (int i = 0; i < spawnPlatform.Count; i++)
+			for (int i = 0; i < _createdPlatforms.Count; i++)
 			{
-				GameObject platform = spawnPlatform[i];
-
-				if (platform.transform.position.z > ballObject.transform.position.z)
-				{
-
-					platform.transform.DOScale(new Vector3(1.3f, platform.transform.localScale.y, 1.2f), 0.2f).OnComplete(() =>
-					{
-						ColorPlatform();
-					});
+				Platform platform = _createdPlatforms[i];
 				
-				}
-			}
-
-		}
-		public void ColorPlatform()
-		{
-			
-			GameObject lastPlatform = spawnPlatform[0];
-			for (int i = 0; i < spawnPlatform.Count; i++)
-			{
-				GameObject platform = spawnPlatform[i];
-				if (platform.transform.position.z>ballObject.transform.position.z)
+				if (platform.transform.position.z > playerHorizontal.childTransform.transform.position.z)
 				{
-					_platform.material.DOColor(targetColor, colorDuration);
+					platform.PlatformScalingColoringAnimation(targetColor);
 				}
 			}
 		}
-		
-
 	}
 }
