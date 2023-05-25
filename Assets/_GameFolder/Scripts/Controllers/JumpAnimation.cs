@@ -2,11 +2,15 @@ using SplashyGame.Managers;
 using SplashyGame.Platforms;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
+using SplashyGame.Gems;
 
 namespace SplashyGame.Controllers
 {
 	public class JumpAnimation : MonoBehaviour
 	{
+		LevelManager _levelManager;
+
 		public Vector3 endPosition;
 
 		public Ease jumpEase;
@@ -18,6 +22,12 @@ namespace SplashyGame.Controllers
 
 		private Tween _jumpAnimation;
 
+		private int score = 0;
+
+		private void Awake()
+		{
+			_levelManager = GetComponentInChildren<LevelManager>();
+		}
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
@@ -39,13 +49,14 @@ namespace SplashyGame.Controllers
 		private void StartJumpAnimation()
 		{
 			_totalJumpingTime = 0;
-			
+
 			_jumpAnimation?.Kill();
 			_jumpAnimation = null;
 			_jumpAnimation = transform.DOLocalJump(endPosition, jumpPower, jumpCount, duration).SetEase(jumpEase);
-			
+
 			endPosition.z += 5f;
 		}
+
 
 		private void OnTriggerEnter(Collider other)
 		{
@@ -53,25 +64,37 @@ namespace SplashyGame.Controllers
 			{
 				return;
 			}
-			
+
 			if (other.gameObject.CompareTag("Platform"))
 			{
 				var platform = other.gameObject.GetComponent<Platform>();
 				if (platform != null && !platform.IsCollidedPlayer)
 				{
 					StartJumpAnimation();
-					
+
 					platform.OnCollidedPlayer();
 				}
 			}
 
 			if (other != null && other.gameObject.CompareTag("White"))
 			{
+				
 				Debug.Log("White");
 			}
-			if (other!=null && other.gameObject.CompareTag("Diamondo"))
+			
+			if (other.CompareTag("Diamondo"))
 			{
+				score++;
+				UIManager.Instance.ScoreTextPlayer(score);
 				Destroy(other.gameObject);
+			}
+			
+			if (other.gameObject.CompareTag("Finish"))
+			{
+				Debug.Log("5");
+				GameManager.Instance.OnGameEnd();
+					
+				Debug.Log("6");
 			}
 		}
 
@@ -86,5 +109,8 @@ namespace SplashyGame.Controllers
 				}
 			}
 		}
+
+
+		
 	}
 }

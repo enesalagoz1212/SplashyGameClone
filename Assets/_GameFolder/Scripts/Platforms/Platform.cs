@@ -1,16 +1,25 @@
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using SplashyGame.Managers;
+using SplashyGame.Gems;
 
 namespace SplashyGame.Platforms
 {
 	public class Platform : MonoBehaviour
 	{
+		//CubeMaterial _cubeMaterial;
+
+
+
 		public Transform objectsTransform;
 		public GameObject colorObject;
 		public GameObject whitePlateObject;
 		public GameObject diamondo;
+		public GameObject flag;
 		public TextMeshPro numberEffectText;
+
+
 
 		public float onCollidedUpPosY;
 		public float onCollidedUpMoveTime;
@@ -22,10 +31,15 @@ namespace SplashyGame.Platforms
 
 		public bool IsCollidedPlayer { get; private set; }
 
-		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen,bool isDiamondo)
+		private void Awake()
+		{
+
+			//_cubeMaterial = GetComponent<CubeMaterial>();
+		}
+		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen, bool isDiamondo, bool isFlag)
 		{
 			numberEffectText.gameObject.SetActive(false);
-			
+
 			if (isFirstObject)
 			{
 				IsCollidedPlayer = true;
@@ -38,29 +52,40 @@ namespace SplashyGame.Platforms
 			colorObject.SetActive(isColorObjectOpen);
 			whitePlateObject.SetActive(isWhitePlateOpen);
 			diamondo.SetActive(isDiamondo);
+			flag.SetActive(isFlag);
 		}
 
 		public void OnCollidedPlayer()
 		{
 			IsCollidedPlayer = true;
-			
+
+
 			CreateNumberEffect();
 		}
 
 		private void CreateNumberEffect()
 		{
 			numberEffectText.gameObject.SetActive(true);
+
 			numberEffectText.transform.localScale = Vector3.zero;
 			numberEffectText.color = Color.white;
+
+
 
 			numberEffectText.transform.DOScale(1f, 0.4f).OnComplete(() =>
 			{
 				CreateUpDownMoveEffect();
-				
+
 				numberEffectText.DOFade(0f, 0.3f).SetDelay(0.2f);
+
+
 			});
+
+
+
 		}
 
+		
 		private void CreateUpDownMoveEffect()
 		{
 			objectsTransform.DOMoveY(onCollidedUpPosY, onCollidedUpMoveTime).SetEase(onCollidedUpMoveEase).OnComplete(
@@ -69,5 +94,13 @@ namespace SplashyGame.Platforms
 					objectsTransform.DOMoveY(onCollidedDownPosY, onCollidedDownMoveTime).SetEase(onCollidedDownMoveEase);
 				});
 		}
+
+		//private void OnTriggerEnter(Collider other)
+		//{
+		//	if (other.gameObject.CompareTag("Ball"))
+		//	{
+		//		_cubeMaterial.PrefabColorAndScale();
+		//	}
+		//}
 	}
 }

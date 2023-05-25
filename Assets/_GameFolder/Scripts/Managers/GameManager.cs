@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using SplashyGame.Gems;
 
 namespace SplashyGame.Managers
 {
@@ -12,10 +13,11 @@ namespace SplashyGame.Managers
 	
 	public class GameManager : MonoBehaviour
 	{
+		
 		public static GameManager Instance { get; private set; }
 
 		public static Action OnGameStarted;
-		
+		DiamondoRotate _diamondoRotate;
 		public GameState GameState { get; private set; }
 
 		private void Awake() 
@@ -34,6 +36,7 @@ namespace SplashyGame.Managers
 		private void Start()
 		{
 			GameState = GameState.Start;
+			_diamondoRotate = gameObject.GetComponent<DiamondoRotate>();
 		}
 
 		private void Update()
@@ -62,8 +65,10 @@ namespace SplashyGame.Managers
 		{
 			GameState = GameState.Playing;
 			OnGameStarted?.Invoke();
-		}
 
+			_diamondoRotate.Rotate();
+		}
+		
 		public void OnGameEnd()
 		{
 			GameState = GameState.End;
