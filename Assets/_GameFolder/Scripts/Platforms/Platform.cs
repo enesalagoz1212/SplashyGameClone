@@ -28,12 +28,7 @@ namespace SplashyGame.Platforms
 		public Ease onCollidedDownMoveEase;
 
 		public bool IsCollidedPlayer { get; private set; }
-
-		private void Awake()
-		{
-
-			//_cubeMaterial = GetComponent<CubeMaterial>();
-		}
+		
 		public void OnPlatformCreated(bool isFirstObject, bool isColorObjectOpen, bool isWhitePlateOpen, bool isDiamondo, bool isFlag)
 		{
 			numberEffectText.gameObject.SetActive(false);
@@ -53,37 +48,31 @@ namespace SplashyGame.Platforms
 			flag.SetActive(isFlag);
 		}
 
-		public void OnCollidedPlayer()
+		public void OnCollidedPlayer(Vector3 collisionPosition)
 		{
 			IsCollidedPlayer = true;
-
-
-			CreateNumberEffect();
+			
+			CreateNumberEffect(collisionPosition);
 		}
 
-		private void CreateNumberEffect()
+		private void CreateNumberEffect(Vector3 collisionPosition)
 		{
 			numberEffectText.gameObject.SetActive(true);
 
+			Vector3 numberEffectPos = numberEffectText.transform.position;
+			numberEffectText.transform.position = new Vector3(collisionPosition.x, numberEffectPos.y, numberEffectPos.z);
+			
 			numberEffectText.transform.localScale = Vector3.zero;
 			numberEffectText.color = Color.white;
-
-
-
+			
 			numberEffectText.transform.DOScale(1f, 0.4f).OnComplete(() =>
 			{
 				CreateUpDownMoveEffect();
 
 				numberEffectText.DOFade(0f, 0.3f).SetDelay(0.2f);
-
-
 			});
-
-
-
 		}
 
-		
 		private void CreateUpDownMoveEffect()
 		{
 			objectsTransform.DOMoveY(onCollidedUpPosY, onCollidedUpMoveTime).SetEase(onCollidedUpMoveEase).OnComplete(

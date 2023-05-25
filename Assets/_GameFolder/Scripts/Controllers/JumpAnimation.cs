@@ -72,7 +72,8 @@ namespace SplashyGame.Controllers
 				{
 					StartJumpAnimation();
 
-					platform.OnCollidedPlayer();
+					Vector3 collisionPosition = transform.position;
+					platform.OnCollidedPlayer(collisionPosition);
 				}
 			}
 
@@ -91,10 +92,7 @@ namespace SplashyGame.Controllers
 			
 			if (other.gameObject.CompareTag("Finish"))
 			{
-				Debug.Log("5");
 				GameManager.Instance.OnGameEnd();
-					
-				Debug.Log("6");
 			}
 		}
 

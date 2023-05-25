@@ -9,7 +9,6 @@ namespace SplashyGame.Gems
 		{
 			if (other.gameObject.CompareTag("Ball"))
 			{
-				Debug.Log("2");
 				LevelManager.Instance.ScalePlatforms();
 				Destroy(gameObject);
 			}
