@@ -48,6 +48,7 @@ namespace SplashyGame.Controllers
 
 		private void StartJumpAnimation()
 		{
+			
 			_totalJumpingTime = 0;
 
 			_jumpAnimation?.Kill();
@@ -64,9 +65,11 @@ namespace SplashyGame.Controllers
 			{
 				return;
 			}
+			
 
 			if (other.gameObject.CompareTag("Platform"))
 			{
+				UIManager.Instance.UpdateSliderBar();
 				var platform = other.gameObject.GetComponent<Platform>();
 				if (platform != null && !platform.IsCollidedPlayer)
 				{
@@ -93,6 +96,7 @@ namespace SplashyGame.Controllers
 			if (other.gameObject.CompareTag("Finish"))
 			{
 				GameManager.Instance.OnGameEnd();
+			
 			}
 		}
 
@@ -104,7 +108,9 @@ namespace SplashyGame.Controllers
 				if (_totalJumpingTime > duration + 0.1f)
 				{
 					GameManager.Instance.OnGameEnd();
+				
 				}
+				
 			}
 		}
 
