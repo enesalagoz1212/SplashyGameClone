@@ -114,6 +114,8 @@ namespace SplashyGame.Controllers
 				Debug.Log(Time.time);
 				UIManager.Instance.BestScoreText.gameObject.SetActive(false);
 				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
+
+
 			}
 		}
 

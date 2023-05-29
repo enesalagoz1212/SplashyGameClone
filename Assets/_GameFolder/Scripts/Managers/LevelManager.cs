@@ -42,11 +42,11 @@ namespace SplashyGame.Managers
 
 		private void Start()
 		{
-			currentLevel = PlayerPrefs.GetInt("CurentLevel", 1);
+			currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
 			SpawnPrefabs();
 			Debug.Log("a");
 			UIManager.Instance.SetLevelText(level[0]);
-			Debug.Log("b");
+			Debug.Log("");
 		}
 
 		private void SpawnPrefabs()
