@@ -14,9 +14,27 @@ namespace SplashyGame.Managers
 	public class GameManager : MonoBehaviour
 	{
 		
+		public const string BestScorePrefsString = "BestScore";
+
+		public static int BestScore
+		{
+			get
+			{
+				return PlayerPrefs.GetInt(BestScorePrefsString);
+			}
+			set
+			{
+				PlayerPrefs.SetInt(BestScorePrefsString, value);
+			}
+		}
+		
+		public int gameScore;
+		
 		public static GameManager Instance { get; private set; }
 
 		public static Action OnGameStarted;
+		public static Action<int> OnGameScoreIncreased;
+		
 		DiamondoRotate _diamondoRotate;
 		public GameState GameState { get; private set; }
 
@@ -67,12 +85,25 @@ namespace SplashyGame.Managers
 			GameState = GameState.Playing;
 			OnGameStarted?.Invoke();
 
+			gameScore = 0;
+
 			_diamondoRotate.Rotate();
 		}
 		
 		public void OnGameEnd()
 		{
 			GameState = GameState.End;
+
+			if (gameScore > BestScore)
+			{
+				BestScore = gameScore;
+			}
+		}
+
+		public void IncreaseGameScore(int increaseAmount)
+		{
+			gameScore += increaseAmount;
+			OnGameScoreIncreased?.Invoke(gameScore);
 		}
 	}
 }

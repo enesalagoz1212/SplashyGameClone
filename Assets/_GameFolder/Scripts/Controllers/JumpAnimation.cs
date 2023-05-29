@@ -2,18 +2,12 @@ using SplashyGame.Managers;
 using SplashyGame.Platforms;
 using UnityEngine;
 using DG.Tweening;
-using TMPro;
-using SplashyGame.Gems;
-using UnityEngine.SceneManagement;
 
 namespace SplashyGame.Controllers
 {
 	public class JumpAnimation : MonoBehaviour
 	{
-
-		private int score = 0;
-		private int bestScore = 0;
-
+		
 		public Vector3 endPosition;
 
 		public Ease jumpEase;
@@ -74,14 +68,10 @@ namespace SplashyGame.Controllers
 				return;
 			}
 			
-
 			if (other.gameObject.CompareTag("Platform"))
 			{
-				bestScore++;
-			
-				UIManager.Instance.PlayerPrefsSet();
-				UIManager.Instance.BestScoreTextPlayer(bestScore);
-				UIManager.Instance.SetLevelText(LevelManager.Instance.level[0]);
+				GameManager.Instance.IncreaseGameScore(1);
+
 				var platform = other.gameObject.GetComponent<Platform>();
 				if (platform != null && !platform.IsCollidedPlayer)
 				{
@@ -100,42 +90,26 @@ namespace SplashyGame.Controllers
 			
 			if (other.CompareTag("Diamondo"))
 			{
-
-				score++;
-				UIManager.Instance.ScoreTextPlayer(score);			
+				// Increased diamond
 				Destroy(other.gameObject);
 			}
 			
 			if (other.gameObject.CompareTag("Finish"))
 			{
-				
-				
 				GameManager.Instance.OnGameEnd();
-				Debug.Log(Time.time);
-				UIManager.Instance.BestScoreText.gameObject.SetActive(false);
-				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
-
-
 			}
 		}
 
 		private void Update()
 		{
-			
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
 				_totalJumpingTime += Time.deltaTime * 1f;
 				if (_totalJumpingTime > duration + 0.1f)
 				{
 					GameManager.Instance.OnGameEnd();
-					
-					
 				}
-				
 			}
 		}
-
-
-		
 	}
 }

@@ -133,6 +133,7 @@ namespace SplashyGame.Managers
 				}
 			}
 		}
+		
 		public void IncreaseLevel()
 		{
 			currentLevel++;
