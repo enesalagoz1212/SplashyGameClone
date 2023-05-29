@@ -45,6 +45,7 @@ namespace SplashyGame.Managers
 		{
 			PlayerPrefsGet();
 
+			fullImage.fillAmount = 0f;
 
 			LevelsButton.gameObject.SetActive(false);
 
@@ -57,31 +58,24 @@ namespace SplashyGame.Managers
 		{
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
-
-				if (gameActive == true)
-				{
-					Debug.Log("azalýyor");
-					fullImage.fillAmount -= 1.02f / waitTime * Time.deltaTime;
-				}
+				fullImage.fillAmount = LevelManager.Instance.ReturnPlayerProgress();
+				// if (gameActive)
+				// {
+				// 	Debug.Log("decreasing");
+				// 	fullImage.fillAmount -= 1.02f / waitTime * Time.deltaTime;
+				// }
 			}
-
-
 		}
+		
 		public void ScoreTextPlayer(int score)
 		{
-
-
 			scoreText.text = " " + score.ToString();
 		}
 
 		public void BestScoreTextPlayer(int bestScore)
 		{
-
 			BestScoreText.text = $"  {bestScore.ToString()}";
-
 		}
-
-
 
 		public void PlayerPrefsSet()
 		{

@@ -27,6 +27,10 @@ namespace SplashyGame.Managers
 		public int[] level = new int[3] { 1, 2, 3 };
 
 		int currentLevel = 0;
+
+		private float _firstPlatformPositionZ;
+		private float _lastPlatformPositionZ;
+		
 		private void Awake() 
 		{ 
 			// If there is an instance, and it's not me, delete myself.
@@ -111,9 +115,10 @@ namespace SplashyGame.Managers
 
 					platformScript.OnPlatformCreated(isFirstObject, isColorObjectOpen, isWhitePlateOpen, isDiamondo, isFlag);
 				}
-
-
 			}
+
+			_firstPlatformPositionZ = _createdPlatforms[0].transform.position.z;
+			_lastPlatformPositionZ = _createdPlatforms[_createdPlatforms.Count - 1].transform.position.z;
 		}
 
 		public void ScalePlatforms()
@@ -134,6 +139,13 @@ namespace SplashyGame.Managers
 			PlayerPrefs.SetInt("CurrentLevel", currentLevel);
 			PlayerPrefs.Save();
 			UIManager.Instance.SetLevelText(currentLevel);
+		}
+
+		public float ReturnPlayerProgress()
+		{
+			var top = (playerHorizontal.childTransform.position.z - _firstPlatformPositionZ);
+			var bottom = (_lastPlatformPositionZ - _firstPlatformPositionZ);
+			return top / bottom;
 		}
 	}
 }
