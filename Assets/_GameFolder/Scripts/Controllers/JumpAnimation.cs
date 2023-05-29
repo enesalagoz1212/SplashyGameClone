@@ -4,12 +4,15 @@ using UnityEngine;
 using DG.Tweening;
 using TMPro;
 using SplashyGame.Gems;
+using UnityEngine.SceneManagement;
 
 namespace SplashyGame.Controllers
 {
 	public class JumpAnimation : MonoBehaviour
 	{
-		LevelManager _levelManager;
+
+		private int score = 0;
+		private int bestScore = 0;
 
 		public Vector3 endPosition;
 
@@ -22,11 +25,11 @@ namespace SplashyGame.Controllers
 
 		private Tween _jumpAnimation;
 
-		private int score = 0;
+		
 
 		private void Awake()
 		{
-			_levelManager = GetComponentInChildren<LevelManager>();
+			
 		}
 		private void OnEnable()
 		{
@@ -42,7 +45,10 @@ namespace SplashyGame.Controllers
 		{
 			Debug.Log($"Player jump animation script, on game started!");
 
+			
+
 			_totalJumpingTime = 0;
+			
 			StartJumpAnimation();
 		}
 
@@ -56,6 +62,8 @@ namespace SplashyGame.Controllers
 			_jumpAnimation = transform.DOLocalJump(endPosition, jumpPower, jumpCount, duration).SetEase(jumpEase);
 
 			endPosition.z += 5f;
+
+
 		}
 
 
@@ -69,7 +77,11 @@ namespace SplashyGame.Controllers
 
 			if (other.gameObject.CompareTag("Platform"))
 			{
-				UIManager.Instance.UpdateSliderBar();
+				bestScore++;
+			
+				UIManager.Instance.PlayerPrefsSet();
+				UIManager.Instance.BestScoreTextPlayer(bestScore);
+				UIManager.Instance.SetLevelText(LevelManager.Instance.level[0]);
 				var platform = other.gameObject.GetComponent<Platform>();
 				if (platform != null && !platform.IsCollidedPlayer)
 				{
@@ -88,27 +100,34 @@ namespace SplashyGame.Controllers
 			
 			if (other.CompareTag("Diamondo"))
 			{
+
 				score++;
-				UIManager.Instance.ScoreTextPlayer(score);
+				UIManager.Instance.ScoreTextPlayer(score);			
 				Destroy(other.gameObject);
 			}
 			
 			if (other.gameObject.CompareTag("Finish"))
 			{
+				
+				
 				GameManager.Instance.OnGameEnd();
-			
+				Debug.Log(Time.time);
+				UIManager.Instance.BestScoreText.gameObject.SetActive(false);
+				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
 			}
 		}
 
 		private void Update()
 		{
+			
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
 				_totalJumpingTime += Time.deltaTime * 1f;
 				if (_totalJumpingTime > duration + 0.1f)
 				{
 					GameManager.Instance.OnGameEnd();
-				
+					
+					
 				}
 				
 			}

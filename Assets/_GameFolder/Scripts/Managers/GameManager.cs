@@ -51,6 +51,7 @@ namespace SplashyGame.Managers
 					break;
 				
 				case GameState.Playing:
+					
 					break;
 				
 				case GameState.End:
