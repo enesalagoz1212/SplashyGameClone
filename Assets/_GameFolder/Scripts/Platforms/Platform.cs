@@ -90,12 +90,6 @@ namespace SplashyGame.Platforms
 			});
 		}
 
-		//private void OnTriggerEnter(Collider other)
-		//{
-		//	if (other.gameObject.CompareTag("Ball"))
-		//	{
-		//		_cubeMaterial.PrefabColorAndScale();
-		//	}
-		//}
+		
 	}
 }

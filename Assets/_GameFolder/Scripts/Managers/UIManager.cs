@@ -11,6 +11,7 @@ namespace SplashyGame.Managers
 
 		public TextMeshProUGUI BestScoreText;
 		public TMP_Text gameScoreText;
+		public TMP_Text diamondoScoreText;
 
 		public Button LevelsButton;
 		public Button SettingButton;
@@ -37,20 +38,23 @@ namespace SplashyGame.Managers
 
 		private void OnEnable()
 		{
+			
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
+			GameManager.OnDiamodoScoreIncreased += OnDiamondoScoreIncreased;
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
+			GameManager.OnDiamodoScoreIncreased -= OnDiamondoScoreIncreased;
 		}
-
+		
 		private void Start()
 		{
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
-
+			diamondoScoreText.text = $" {GameManager.DiamondoScore}";
 			fullImage.fillAmount = 0f;
 			
 			gameScoreText.gameObject.SetActive(false);
@@ -68,6 +72,7 @@ namespace SplashyGame.Managers
 			
 			gameScoreText.gameObject.SetActive(true);
 			gameScoreText.text = GameManager.Instance.gameScore.ToString();
+			diamondoScoreText.text = GameManager.Instance.diamondoScore.ToString();
 		}
 
 		private void Update()
@@ -92,6 +97,10 @@ namespace SplashyGame.Managers
 		private void OnGameScoreIncreased(int gameScore)
 		{
 			gameScoreText.text = gameScore.ToString();
+		}
+		private void OnDiamondoScoreIncreased(int diamondoScore)
+		{
+			diamondoScoreText.text = diamondoScore.ToString();
 		}
 	}
 }

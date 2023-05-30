@@ -71,6 +71,7 @@ namespace SplashyGame.Controllers
 			if (other.gameObject.CompareTag("Platform"))
 			{
 				GameManager.Instance.IncreaseGameScore(1);
+				
 
 				var platform = other.gameObject.GetComponent<Platform>();
 				if (platform != null && !platform.IsCollidedPlayer)
@@ -91,6 +92,7 @@ namespace SplashyGame.Controllers
 			if (other.CompareTag("Diamondo"))
 			{
 				// Increased diamond
+				GameManager.Instance.IncreaseDiamondoScore(1);
 				Destroy(other.gameObject);
 			}
 			

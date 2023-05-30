@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 347396901}
   - component: {fileID: 347396900}
   m_Layer: 5
-  m_Name: TextDiamond
+  m_Name: DiamondoScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1096,6 +1096,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BestScoreText: {fileID: 1935750460}
   gameScoreText: {fileID: 1231115344}
+  diamondoScoreText: {fileID: 347396900}
   LevelsButton: {fileID: 1801534595}
   SettingButton: {fileID: 1223784226}
   fullImage: {fileID: 1630277821}
@@ -1553,6 +1554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameScore: 0
+  diamondoScore: 0
 --- !u!4 &1184099124
 Transform:
   m_ObjectHideFlags: 0

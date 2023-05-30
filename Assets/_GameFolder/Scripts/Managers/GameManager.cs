@@ -10,12 +10,24 @@ namespace SplashyGame.Managers
 		Playing = 1,
 		End = 2,
 	}
-	
+
 	public class GameManager : MonoBehaviour
 	{
-		
-		public const string BestScorePrefsString = "BestScore";
 
+		public const string BestScorePrefsString = "BestScore";
+		public const string DiamondoScorePrefsString = "DiamodoScore";
+
+		public static int DiamondoScore
+		{
+			get
+			{
+				return PlayerPrefs.GetInt(DiamondoScorePrefsString);
+			}
+			set
+			{
+				PlayerPrefs.SetInt(DiamondoScorePrefsString, value);
+			}
+		}
 		public static int BestScore
 		{
 			get
@@ -27,28 +39,28 @@ namespace SplashyGame.Managers
 				PlayerPrefs.SetInt(BestScorePrefsString, value);
 			}
 		}
-		
+
 		public int gameScore;
-		
+		public int diamondoScore;
 		public static GameManager Instance { get; private set; }
 
 		public static Action OnGameStarted;
 		public static Action<int> OnGameScoreIncreased;
-		
+		public static Action<int> OnDiamodoScoreIncreased;
 		DiamondoRotate _diamondoRotate;
 		public GameState GameState { get; private set; }
 
-		private void Awake() 
-		{ 
+		private void Awake()
+		{
 			// If there is an instance, and it's not me, delete myself.
-			if (Instance != null && Instance != this) 
-			{ 
-				Destroy(this); 
-			} 
-			else 
-			{ 
-				Instance = this; 
-			} 
+			if (Instance != null && Instance != this)
+			{
+				Destroy(this);
+			}
+			else
+			{
+				Instance = this;
+			}
 		}
 
 		private void Start()
@@ -67,14 +79,14 @@ namespace SplashyGame.Managers
 						OnGameStart();
 					}
 					break;
-				
+
 				case GameState.Playing:
-					
+
 					break;
-				
+
 				case GameState.End:
 					break;
-				
+
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
@@ -86,10 +98,11 @@ namespace SplashyGame.Managers
 			OnGameStarted?.Invoke();
 
 			gameScore = 0;
+			diamondoScore = 0;
 
 			_diamondoRotate.Rotate();
 		}
-		
+
 		public void OnGameEnd()
 		{
 			GameState = GameState.End;
@@ -98,6 +111,10 @@ namespace SplashyGame.Managers
 			{
 				BestScore = gameScore;
 			}
+			if (diamondoScore > DiamondoScore)
+			{
+				DiamondoScore = diamondoScore;
+			}
 		}
 
 		public void IncreaseGameScore(int increaseAmount)
@@ -105,5 +122,12 @@ namespace SplashyGame.Managers
 			gameScore += increaseAmount;
 			OnGameScoreIncreased?.Invoke(gameScore);
 		}
+		public void IncreaseDiamondoScore(int increase)
+		{
+			diamondoScore += increase;
+			OnDiamodoScoreIncreased?.Invoke(diamondoScore);
+
+		}
+
 	}
 }

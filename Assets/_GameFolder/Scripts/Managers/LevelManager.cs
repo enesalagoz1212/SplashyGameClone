@@ -50,7 +50,7 @@ namespace SplashyGame.Managers
 			SpawnPrefabs();
 			Debug.Log("a");
 			UIManager.Instance.SetLevelText(level[0]);
-			Debug.Log("");
+			Debug.Log("b");
 		}
 
 		private void SpawnPrefabs()
