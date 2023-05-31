@@ -45,10 +45,11 @@ namespace SplashyGame.Managers
 		public static GameManager Instance { get; private set; }
 
 		public static Action OnGameStarted;
+		public static Action OnGameEnded;
 		public static Action<int> OnGameScoreIncreased;
 		public static Action<int> OnDiamodoScoreIncreased;
 		DiamondoRotate _diamondoRotate;
-		public GameState GameState { get; private set; }
+		public GameState GameState { get;  set; }
 
 		private void Awake()
 		{
@@ -74,6 +75,7 @@ namespace SplashyGame.Managers
 			switch (GameState)
 			{
 				case GameState.Start:
+				
 					if (Input.GetMouseButtonDown(0))
 					{
 						OnGameStart();
@@ -85,6 +87,7 @@ namespace SplashyGame.Managers
 					break;
 
 				case GameState.End:
+					
 					break;
 
 				default:
@@ -94,6 +97,8 @@ namespace SplashyGame.Managers
 
 		public void OnGameStart()
 		{
+			
+
 			GameState = GameState.Playing;
 			OnGameStarted?.Invoke();
 
@@ -101,11 +106,14 @@ namespace SplashyGame.Managers
 			diamondoScore = 0;
 
 			_diamondoRotate.Rotate();
+
+			
 		}
 
 		public void OnGameEnd()
 		{
 			GameState = GameState.End;
+			OnGameEnded?.Invoke();
 
 			if (gameScore > BestScore)
 			{

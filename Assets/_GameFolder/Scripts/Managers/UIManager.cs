@@ -2,12 +2,18 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using DG.Tweening;
 namespace SplashyGame.Managers
 {
 	public class UIManager : MonoBehaviour
 	{
 		public static UIManager Instance { get; private set; }
+
+		public GameObject panel;
+		public Image handImage;
+
+		public float moveDistance;
+		public float moveDuration;
 
 		public TextMeshProUGUI BestScoreText;
 		public TMP_Text gameScoreText;
@@ -17,13 +23,13 @@ namespace SplashyGame.Managers
 		public Button SettingButton;
 
 		public Image fullImage;
-		public float waitTime = 21.36f;
+		//public float waitTime = 21.36f;
 
 		public TextMeshProUGUI diamondText;
 		public TextMeshProUGUI levelText;
 		public TextMeshProUGUI levelPassedText;
 
-		
+
 		private void Awake()
 		{
 			if (Instance == null)
@@ -38,10 +44,11 @@ namespace SplashyGame.Managers
 
 		private void OnEnable()
 		{
-			
+
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
 			GameManager.OnDiamodoScoreIncreased += OnDiamondoScoreIncreased;
+			
 		}
 
 		private void OnDisable()
@@ -50,26 +57,24 @@ namespace SplashyGame.Managers
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
 			GameManager.OnDiamodoScoreIncreased -= OnDiamondoScoreIncreased;
 		}
-		
+
 		private void Start()
 		{
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
 			diamondoScoreText.text = $" {GameManager.DiamondoScore}";
 			fullImage.fillAmount = 0f;
-			
-			gameScoreText.gameObject.SetActive(false);
 
-			LevelsButton.gameObject.SetActive(false);
-
-			SettingButton.gameObject.SetActive(false);
 
 			levelText.text = $"LEVEL {LevelManager.Instance.level[0].ToString()}";
+			UIManager.Instance.MoveImageAnimation();
+
 		}
 
 		private void OnGameStarted()
 		{
-			BestScoreText.gameObject.SetActive(false);
 			
+			BestScoreText.gameObject.SetActive(false);
+
 			gameScoreText.gameObject.SetActive(true);
 			gameScoreText.text = GameManager.Instance.gameScore.ToString();
 			diamondoScoreText.text = GameManager.Instance.diamondoScore.ToString();
@@ -101,6 +106,11 @@ namespace SplashyGame.Managers
 		private void OnDiamondoScoreIncreased(int diamondoScore)
 		{
 			diamondoScoreText.text = diamondoScore.ToString();
+		}
+		public void MoveImageAnimation()
+		{
+			handImage.rectTransform.anchoredPosition = new Vector2(-356, -171);
+			handImage.rectTransform.DOAnchorPosX(moveDistance, moveDuration).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
 		}
 	}
 }

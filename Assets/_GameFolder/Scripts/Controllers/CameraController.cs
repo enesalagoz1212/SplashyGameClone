@@ -7,7 +7,11 @@ namespace SplashyGame.Controllers
 		public GameObject player;
 		public Vector3 offset;
 		private float _cameraY;
-		
+
+		//public Transform handTransform;
+		//public float moveDistance = 1f;
+		//public float moveDuration = 1f;
+		//public Ease moveEase;
 		private void Start()
 		{
 			_cameraY = transform.position.y;
@@ -20,5 +24,10 @@ namespace SplashyGame.Controllers
 			position.y = _cameraY;
 			transform.position = position;
 		}
+		//public void HandMoveAnimation()
+		//{
+		//	handTransform.position = new Vector3(0, 0, 0);
+		//	handTransform.DOMoveX(moveDistance, moveDuration).SetEase(moveEase).SetLoops(-1, LoopType.Yoyo);
+		//}
 	}
 }

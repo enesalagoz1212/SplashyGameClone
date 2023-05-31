@@ -7,7 +7,7 @@ namespace SplashyGame.Controllers
 {
 	public class JumpAnimation : MonoBehaviour
 	{
-		
+
 		public Vector3 endPosition;
 
 		public Ease jumpEase;
@@ -19,36 +19,50 @@ namespace SplashyGame.Controllers
 
 		private Tween _jumpAnimation;
 
-		
+		public float fadeDuration = 0.5f;
+	
 
 		private void Awake()
 		{
-			
+
 		}
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
+			GameManager.OnGameEnded += OnGameEnded;
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
+			GameManager.OnGameEnded -= OnGameEnded;
 		}
 
 		private void OnGameStarted()
 		{
 			Debug.Log($"Player jump animation script, on game started!");
 
-			
+
 
 			_totalJumpingTime = 0;
-			
+
 			StartJumpAnimation();
 		}
-
+		private void OnGameEnded()
+		{
+			if (GameManager.Instance.GameState== GameState.End)
+			{
+				return;
+			}
+			GameManager.Instance.OnGameEnd();
+		
+			
+		}
 		private void StartJumpAnimation()
 		{
-			
+			UIManager.Instance.LevelsButton.gameObject.SetActive(false);
+			UIManager.Instance.SettingButton.gameObject.SetActive(false);
+
 			_totalJumpingTime = 0;
 
 			_jumpAnimation?.Kill();
@@ -57,6 +71,11 @@ namespace SplashyGame.Controllers
 
 			endPosition.z += 5f;
 
+			UIManager.Instance.handImage.DOFade(0f, fadeDuration).OnComplete(() =>
+			 {
+				 Destroy(UIManager.Instance.panel.gameObject);
+				
+			 });
 
 		}
 
@@ -67,11 +86,11 @@ namespace SplashyGame.Controllers
 			{
 				return;
 			}
-			
+
 			if (other.gameObject.CompareTag("Platform"))
 			{
 				GameManager.Instance.IncreaseGameScore(1);
-				
+
 
 				var platform = other.gameObject.GetComponent<Platform>();
 				if (platform != null && !platform.IsCollidedPlayer)
@@ -85,31 +104,36 @@ namespace SplashyGame.Controllers
 
 			if (other != null && other.gameObject.CompareTag("White"))
 			{
-				
+
 				Debug.Log("White");
 			}
-			
+
 			if (other.CompareTag("Diamondo"))
 			{
 				// Increased diamond
 				GameManager.Instance.IncreaseDiamondoScore(1);
 				Destroy(other.gameObject);
 			}
-			
+
 			if (other.gameObject.CompareTag("Finish"))
 			{
-				GameManager.Instance.OnGameEnd();
+				
+				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
+				UIManager.Instance.gameScoreText.gameObject.SetActive(false);
+				OnGameEnded();
 			}
 		}
 
 		private void Update()
 		{
+
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
+				
 				_totalJumpingTime += Time.deltaTime * 1f;
 				if (_totalJumpingTime > duration + 0.1f)
 				{
-					GameManager.Instance.OnGameEnd();
+					OnGameEnded();
 				}
 			}
 		}
