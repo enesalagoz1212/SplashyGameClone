@@ -15,17 +15,17 @@ namespace SplashyGame.Managers
 	{
 
 		public const string BestScorePrefsString = "BestScore";
-		public const string DiamondoScorePrefsString = "DiamodoScore";
+		public const string DiamondScorePrefsString = "DiamondScore";
 
-		public static int DiamondoScore
+		public static int DiamondScore
 		{
 			get
 			{
-				return PlayerPrefs.GetInt(DiamondoScorePrefsString);
+				return PlayerPrefs.GetInt(DiamondScorePrefsString);
 			}
 			set
 			{
-				PlayerPrefs.SetInt(DiamondoScorePrefsString, value);
+				PlayerPrefs.SetInt(DiamondScorePrefsString, value);
 			}
 		}
 		public static int BestScore
@@ -41,13 +41,12 @@ namespace SplashyGame.Managers
 		}
 
 		public int gameScore;
-		public int diamondoScore;
 		public static GameManager Instance { get; private set; }
 
 		public static Action OnGameStarted;
 		public static Action OnGameEnded;
 		public static Action<int> OnGameScoreIncreased;
-		public static Action<int> OnDiamodoScoreIncreased;
+		public static Action<int> OnDiamondScoreIncreased;
 		DiamondoRotate _diamondoRotate;
 		public GameState GameState { get;  set; }
 
@@ -97,17 +96,12 @@ namespace SplashyGame.Managers
 
 		public void OnGameStart()
 		{
-			
-
 			GameState = GameState.Playing;
 			OnGameStarted?.Invoke();
 
 			gameScore = 0;
-			diamondoScore = 0;
 
 			_diamondoRotate.Rotate();
-
-			
 		}
 
 		public void OnGameEnd()
@@ -119,10 +113,6 @@ namespace SplashyGame.Managers
 			{
 				BestScore = gameScore;
 			}
-			if (diamondoScore > DiamondoScore)
-			{
-				DiamondoScore = diamondoScore;
-			}
 		}
 
 		public void IncreaseGameScore(int increaseAmount)
@@ -130,12 +120,12 @@ namespace SplashyGame.Managers
 			gameScore += increaseAmount;
 			OnGameScoreIncreased?.Invoke(gameScore);
 		}
-		public void IncreaseDiamondoScore(int increase)
+		
+		public void IncreaseDiamondScore(int increase)
 		{
-			diamondoScore += increase;
-			OnDiamodoScoreIncreased?.Invoke(diamondoScore);
-
+			DiamondScore += increase;
+			OnDiamondScoreIncreased?.Invoke(DiamondScore);
+			
 		}
-
 	}
 }

@@ -111,7 +111,7 @@ namespace SplashyGame.Controllers
 			if (other.CompareTag("Diamondo"))
 			{
 				// Increased diamond
-				GameManager.Instance.IncreaseDiamondoScore(1);
+				GameManager.Instance.IncreaseDiamondScore(1);
 				Destroy(other.gameObject);
 			}
 

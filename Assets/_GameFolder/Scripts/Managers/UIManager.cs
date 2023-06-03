@@ -17,7 +17,6 @@ namespace SplashyGame.Managers
 
 		public TextMeshProUGUI BestScoreText;
 		public TMP_Text gameScoreText;
-		public TMP_Text diamondoScoreText;
 
 		public Button LevelsButton;
 		public Button SettingButton;
@@ -47,7 +46,7 @@ namespace SplashyGame.Managers
 
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
-			GameManager.OnDiamodoScoreIncreased += OnDiamondoScoreIncreased;
+			GameManager.OnDiamondScoreIncreased += OnDiamondScoreIncreased;
 			
 		}
 
@@ -55,29 +54,29 @@ namespace SplashyGame.Managers
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
-			GameManager.OnDiamodoScoreIncreased -= OnDiamondoScoreIncreased;
+			GameManager.OnDiamondScoreIncreased -= OnDiamondScoreIncreased;
 		}
 
 		private void Start()
 		{
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
-			diamondoScoreText.text = $" {GameManager.DiamondoScore}";
 			fullImage.fillAmount = 0f;
 
 
 			levelText.text = $"LEVEL {LevelManager.Instance.level[0].ToString()}";
 			UIManager.Instance.MoveImageAnimation();
-
+			
+			SetDiamondText();
 		}
 
 		private void OnGameStarted()
 		{
-			
 			BestScoreText.gameObject.SetActive(false);
 
 			gameScoreText.gameObject.SetActive(true);
 			gameScoreText.text = GameManager.Instance.gameScore.ToString();
-			diamondoScoreText.text = GameManager.Instance.diamondoScore.ToString();
+			
+			SetDiamondText();
 		}
 
 		private void Update()
@@ -99,14 +98,21 @@ namespace SplashyGame.Managers
 			levelText.text = "LEVEL " + level.ToString();
 		}
 
+		private void SetDiamondText()
+		{
+			diamondText.text = $"{GameManager.DiamondScore}";
+		}
+
 		private void OnGameScoreIncreased(int gameScore)
 		{
 			gameScoreText.text = gameScore.ToString();
 		}
-		private void OnDiamondoScoreIncreased(int diamondoScore)
+		
+		private void OnDiamondScoreIncreased(int diamondScore)
 		{
-			diamondoScoreText.text = diamondoScore.ToString();
+			SetDiamondText();
 		}
+		
 		public void MoveImageAnimation()
 		{
 			handImage.rectTransform.anchoredPosition = new Vector2(-356, -171);
