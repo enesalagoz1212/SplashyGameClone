@@ -18,14 +18,7 @@ namespace SplashyGame.Controllers
 		private float _totalJumpingTime;
 
 		private Tween _jumpAnimation;
-
-		public float fadeDuration = 0.5f;
-	
-
-		private void Awake()
-		{
-
-		}
+		
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
@@ -41,28 +34,19 @@ namespace SplashyGame.Controllers
 		private void OnGameStarted()
 		{
 			Debug.Log($"Player jump animation script, on game started!");
-
-
-
+			
 			_totalJumpingTime = 0;
 
 			StartJumpAnimation();
 		}
-		private void OnGameEnded()
-		{
-			if (GameManager.Instance.GameState== GameState.End)
-			{
-				return;
-			}
-			GameManager.Instance.OnGameEnd();
 		
+		private void OnGameEnded(bool isSuccess)
+		{
 			
 		}
+		
 		private void StartJumpAnimation()
 		{
-			UIManager.Instance.LevelsButton.gameObject.SetActive(false);
-			UIManager.Instance.SettingButton.gameObject.SetActive(false);
-
 			_totalJumpingTime = 0;
 
 			_jumpAnimation?.Kill();
@@ -71,11 +55,7 @@ namespace SplashyGame.Controllers
 
 			endPosition.z += 5f;
 
-			UIManager.Instance.handImage.DOFade(0f, fadeDuration).OnComplete(() =>
-			 {
-				 Destroy(UIManager.Instance.panel.gameObject);
-				
-			 });
+			
 
 		}
 
@@ -117,23 +97,21 @@ namespace SplashyGame.Controllers
 
 			if (other.gameObject.CompareTag("Finish"))
 			{
-				
 				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
 				UIManager.Instance.gameScoreText.gameObject.SetActive(false);
-				OnGameEnded();
+				
+				GameManager.Instance.OnGameEnd(true);
 			}
 		}
 
 		private void Update()
 		{
-
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
-				
 				_totalJumpingTime += Time.deltaTime * 1f;
 				if (_totalJumpingTime > duration + 0.1f)
 				{
-					OnGameEnded();
+					GameManager.Instance.OnGameEnd(false);
 				}
 			}
 		}

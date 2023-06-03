@@ -23,9 +23,7 @@ namespace SplashyGame.Managers
 		private List<Platform> _createdPlatforms = new List<Platform>();
 
 		public Color targetColor;
-
-		public int[] level = new int[3] { 1, 2, 3 };
-
+		
 		int currentLevel = 0;
 
 		private float _firstPlatformPositionZ;
@@ -46,13 +44,8 @@ namespace SplashyGame.Managers
 
 		private void Start()
 		{
-			
-
 			currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
 			SpawnPrefabs();
-			Debug.Log("a");
-			UIManager.Instance.SetLevelText(level[0]);
-			Debug.Log("b");
 		}
 
 		private void SpawnPrefabs()
@@ -140,8 +133,6 @@ namespace SplashyGame.Managers
 		{
 			currentLevel++;
 			PlayerPrefs.SetInt("CurrentLevel", currentLevel);
-			PlayerPrefs.Save();
-			UIManager.Instance.SetLevelText(currentLevel);
 		}
 
 		public float ReturnPlayerProgress()

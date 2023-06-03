@@ -62,9 +62,9 @@ namespace SplashyGame.Managers
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
 			fullImage.fillAmount = 0f;
 
-
-			levelText.text = $"LEVEL {LevelManager.Instance.level[0].ToString()}";
-			UIManager.Instance.MoveImageAnimation();
+			SetLevelText(1); // DEGISECEK!
+			
+			MoveImageAnimation();
 			
 			SetDiamondText();
 		}
@@ -77,6 +77,16 @@ namespace SplashyGame.Managers
 			gameScoreText.text = GameManager.Instance.gameScore.ToString();
 			
 			SetDiamondText();
+			
+			// // // // 
+			
+			LevelsButton.gameObject.SetActive(false);
+			SettingButton.gameObject.SetActive(false);
+			
+			handImage.DOFade(0f, 0.5f).OnComplete(() =>
+			{
+				Destroy(panel.gameObject);
+			});
 		}
 
 		private void Update()

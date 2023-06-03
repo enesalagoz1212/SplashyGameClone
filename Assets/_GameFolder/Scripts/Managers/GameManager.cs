@@ -13,6 +13,7 @@ namespace SplashyGame.Managers
 
 	public class GameManager : MonoBehaviour
 	{
+		public static GameManager Instance { get; private set; }
 
 		public const string BestScorePrefsString = "BestScore";
 		public const string DiamondScorePrefsString = "DiamondScore";
@@ -41,14 +42,17 @@ namespace SplashyGame.Managers
 		}
 
 		public int gameScore;
-		public static GameManager Instance { get; private set; }
 
 		public static Action OnGameStarted;
-		public static Action OnGameEnded;
+		public static Action<bool> OnGameEnded;
 		public static Action<int> OnGameScoreIncreased;
 		public static Action<int> OnDiamondScoreIncreased;
+		
 		DiamondoRotate _diamondoRotate;
+		
 		public GameState GameState { get;  set; }
+
+		private bool _isEndSuccess;
 
 		private void Awake()
 		{
@@ -104,10 +108,11 @@ namespace SplashyGame.Managers
 			_diamondoRotate.Rotate();
 		}
 
-		public void OnGameEnd()
+		public void OnGameEnd(bool isSuccess)
 		{
+			_isEndSuccess = isSuccess;
 			GameState = GameState.End;
-			OnGameEnded?.Invoke();
+			OnGameEnded?.Invoke(_isEndSuccess);
 
 			if (gameScore > BestScore)
 			{
