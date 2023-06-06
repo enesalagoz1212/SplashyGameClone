@@ -103,8 +103,7 @@ namespace SplashyGame.Controllers
 				GameManager.Instance.OnGameEnd(true);
 			}
 		}
-
-		private void Update()
+		public void AnimationTime()
 		{
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
@@ -114,6 +113,10 @@ namespace SplashyGame.Controllers
 					GameManager.Instance.OnGameEnd(false);
 				}
 			}
+		}
+		private void Update()
+		{
+			AnimationTime();
 		}
 	}
 }

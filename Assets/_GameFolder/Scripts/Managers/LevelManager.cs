@@ -15,6 +15,8 @@ namespace SplashyGame.Managers
 
 		public PlayerHorizontal playerHorizontal;
 
+		public const string NumberOfLevels = "LevelNumber";
+
 		public float zPos;
 		public float xMin;
 		public float xMax;
@@ -28,7 +30,17 @@ namespace SplashyGame.Managers
 
 		private float _firstPlatformPositionZ;
 		private float _lastPlatformPositionZ;
-		
+		public static int LevelNumber
+		{
+			get
+			{
+				return PlayerPrefs.GetInt(NumberOfLevels);
+			}
+			set
+			{
+				PlayerPrefs.SetInt(NumberOfLevels, value);
+			}
+		}
 		private void Awake() 
 		{ 
 			// If there is an instance, and it's not me, delete myself.
@@ -44,7 +56,7 @@ namespace SplashyGame.Managers
 
 		private void Start()
 		{
-			currentLevel = PlayerPrefs.GetInt("CurrentLevel", 1);
+			
 			SpawnPrefabs();
 		}
 
@@ -132,7 +144,7 @@ namespace SplashyGame.Managers
 		public void IncreaseLevel()
 		{
 			currentLevel++;
-			PlayerPrefs.SetInt("CurrentLevel", currentLevel);
+			
 		}
 
 		public float ReturnPlayerProgress()

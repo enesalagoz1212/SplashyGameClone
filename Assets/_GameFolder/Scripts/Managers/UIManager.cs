@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using SplashyGame.Controllers;
 namespace SplashyGame.Managers
 {
 	public class UIManager : MonoBehaviour
 	{
 		public static UIManager Instance { get; private set; }
+		
 
 		public GameObject panel;
 		public Image handImage;
@@ -28,6 +30,9 @@ namespace SplashyGame.Managers
 		public TextMeshProUGUI levelText;
 		public TextMeshProUGUI levelPassedText;
 
+		public Image whiteImage;
+		public Image sliderImage;
+		public TMP_Text levels;
 
 		private void Awake()
 		{
@@ -45,6 +50,7 @@ namespace SplashyGame.Managers
 		{
 
 			GameManager.OnGameStarted += OnGameStarted;
+			GameManager.OnGameEnded += OnGameEnded;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased += OnDiamondScoreIncreased;
 			
@@ -53,6 +59,7 @@ namespace SplashyGame.Managers
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
+			GameManager.OnGameEnded -= OnGameEnded;
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased -= OnDiamondScoreIncreased;
 		}
@@ -68,7 +75,21 @@ namespace SplashyGame.Managers
 			
 			SetDiamondText();
 		}
-
+		private void OnGameEnded(bool end)
+		{
+			Debug.Log("OnGameEnd");
+			gameScoreText.gameObject.SetActive(false);
+			diamondText.gameObject.SetActive(false);
+			whiteImage.gameObject.SetActive(true);
+			
+			levels.DOFade(0f, 0.7f).OnComplete(() =>
+			{
+				sliderImage.gameObject.SetActive(false);
+				//panel.transform.localScale = Vector3.zero;
+			});
+			whiteImage.DOFade(1f, 3f);
+			Debug.Log("OnGameEnd1"); 
+		}
 		private void OnGameStarted()
 		{
 			BestScoreText.gameObject.SetActive(false);
@@ -85,10 +106,11 @@ namespace SplashyGame.Managers
 			
 			handImage.DOFade(0f, 0.5f).OnComplete(() =>
 			{
-				Destroy(panel.gameObject);
+				
+				panel.transform.localScale = Vector3.zero;
 			});
 		}
-
+		
 		private void Update()
 		{
 			if (GameManager.Instance.GameState == GameState.Playing)

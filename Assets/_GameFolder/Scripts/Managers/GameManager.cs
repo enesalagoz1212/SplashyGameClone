@@ -118,7 +118,7 @@ namespace SplashyGame.Managers
 			{
 				BestScore = gameScore;
 			}
-		}
+		}   
 
 		public void IncreaseGameScore(int increaseAmount)
 		{
