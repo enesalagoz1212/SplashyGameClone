@@ -10,7 +10,7 @@ namespace SplashyGame.Managers
 	public class LevelManager : MonoBehaviour
 	{
 		public static LevelManager Instance { get; private set; }
-		
+
 		public GameObject platformPrefab;
 
 		public PlayerHorizontal playerHorizontal;
@@ -25,7 +25,7 @@ namespace SplashyGame.Managers
 		private List<Platform> _createdPlatforms = new List<Platform>();
 
 		public Color targetColor;
-		
+
 		int currentLevel = 0;
 
 		private float _firstPlatformPositionZ;
@@ -41,22 +41,22 @@ namespace SplashyGame.Managers
 				PlayerPrefs.SetInt(NumberOfLevels, value);
 			}
 		}
-		private void Awake() 
-		{ 
+		private void Awake()
+		{
 			// If there is an instance, and it's not me, delete myself.
-			if (Instance != null && Instance != this) 
-			{ 
-				Destroy(this); 
-			} 
-			else 
-			{ 
-				Instance = this; 
-			} 
+			if (Instance != null && Instance != this)
+			{
+				Destroy(this);
+			}
+			else
+			{
+				Instance = this;
+			}
 		}
 
 		private void Start()
 		{
-			
+
 			SpawnPrefabs();
 		}
 
@@ -72,9 +72,9 @@ namespace SplashyGame.Managers
 
 				Vector3 spawnPosition = new Vector3(randomXPos, 0.0f, i * zPos);
 				GameObject platform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity, transform);
-				
+
 				Platform platformScript = platform.GetComponent<Platform>();
-				
+
 				_createdPlatforms.Add(platformScript);
 
 				if (platformScript != null)
@@ -111,7 +111,7 @@ namespace SplashyGame.Managers
 						isDiamondo = false;
 					}
 					bool isFlag;
-					if (i==count)
+					if (i == count)
 					{
 						isFlag = true;
 					}
@@ -133,18 +133,18 @@ namespace SplashyGame.Managers
 			for (int i = 0; i < _createdPlatforms.Count; i++)
 			{
 				Platform platform = _createdPlatforms[i];
-				
+
 				if (platform.transform.position.z > playerHorizontal.childTransform.transform.position.z)
 				{
 					platform.PlatformScalingColoringAnimation(targetColor);
 				}
 			}
 		}
-		
+
 		public void IncreaseLevel()
 		{
 			currentLevel++;
-			
+
 		}
 
 		public float ReturnPlayerProgress()
@@ -152,6 +152,18 @@ namespace SplashyGame.Managers
 			var top = (playerHorizontal.childTransform.position.z - _firstPlatformPositionZ);
 			var bottom = (_lastPlatformPositionZ - _firstPlatformPositionZ);
 			return top / bottom;
+		}
+
+		public IEnumerator ResetPlatforms()
+		{
+			yield return new WaitForSeconds(2f);
+			for (int i = 0; i < _createdPlatforms.Count; i++)
+			{
+				Destroy(_createdPlatforms[i].gameObject);
+			}
+			_createdPlatforms.Clear();
+			SpawnPrefabs();
+
 		}
 	}
 }

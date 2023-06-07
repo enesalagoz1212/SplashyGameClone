@@ -10,6 +10,7 @@ namespace SplashyGame.Movements
 		public float speed = 0.2f;
 		private float firstTouchX;
 
+	
 		private void Update()
 		{
 			switch (GameManager.Instance.GameState)
@@ -22,8 +23,9 @@ namespace SplashyGame.Movements
 					break;
 				
 				case GameState.End:
+					
 					break;
-				
+			
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

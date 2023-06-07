@@ -4,12 +4,14 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using SplashyGame.Controllers;
+using System.Collections;
+
 namespace SplashyGame.Managers
 {
 	public class UIManager : MonoBehaviour
 	{
 		public static UIManager Instance { get; private set; }
-		
+
 
 		public GameObject panel;
 		public Image handImage;
@@ -32,8 +34,10 @@ namespace SplashyGame.Managers
 
 		public Image whiteImage;
 		public Image sliderImage;
+		public Image diamondImage;
 		public TMP_Text levels;
 
+		private bool _isEndSuccess;
 		private void Awake()
 		{
 			if (Instance == null)
@@ -51,66 +55,94 @@ namespace SplashyGame.Managers
 
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameEnded += OnGameEnded;
+			GameManager.OnGameReseted += OnGameReseted;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased += OnDiamondScoreIncreased;
-			
+
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameEnded -= OnGameEnded;
+			GameManager.OnGameReseted -= OnGameReseted;
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased -= OnDiamondScoreIncreased;
 		}
 
 		private void Start()
 		{
+
+
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
 			fullImage.fillAmount = 0f;
 
 			SetLevelText(1); // DEGISECEK!
-			
+
 			MoveImageAnimation();
-			
+
 			SetDiamondText();
 		}
-		private void OnGameEnded(bool end)
+		public void OnGameReseted()
 		{
-			Debug.Log("OnGameEnd");
-			gameScoreText.gameObject.SetActive(false);
-			diamondText.gameObject.SetActive(false);
-			whiteImage.gameObject.SetActive(true);
-			
-			levels.DOFade(0f, 0.7f).OnComplete(() =>
+			StartCoroutine(ResetPlatformCoroutine());
+		}
+		private void OnGameEnded(bool isSuccess)
+		{
+			_isEndSuccess = isSuccess;
+			if (!_isEndSuccess)
 			{
-				sliderImage.gameObject.SetActive(false);
-				//panel.transform.localScale = Vector3.zero;
-			});
-			whiteImage.DOFade(1f, 3f);
-			Debug.Log("OnGameEnd1"); 
+				
+				gameScoreText.gameObject.SetActive(false);
+				diamondText.gameObject.SetActive(false);
+				diamondImage.gameObject.SetActive(false);
+
+				whiteImage.gameObject.SetActive(true);
+
+
+				levels.DOFade(0f, 0.9f).OnComplete(() =>
+				{
+					
+					sliderImage.gameObject.SetActive(false);
+					whiteImage.DOFade(255f, 3f).OnComplete(() =>
+					{
+						
+						whiteImage.DOFade(0f, 1f);
+
+						panel.gameObject.SetActive(true);
+
+					});
+
+				});
+
+
+				OnGameReseted();
+
+			}
+
 		}
 		private void OnGameStarted()
 		{
 			BestScoreText.gameObject.SetActive(false);
-
 			gameScoreText.gameObject.SetActive(true);
+
 			gameScoreText.text = GameManager.Instance.gameScore.ToString();
-			
+
 			SetDiamondText();
-			
+
 			// // // // 
-			
+
 			LevelsButton.gameObject.SetActive(false);
 			SettingButton.gameObject.SetActive(false);
-			
+
 			handImage.DOFade(0f, 0.5f).OnComplete(() =>
 			{
-				
+
 				panel.transform.localScale = Vector3.zero;
+
 			});
 		}
-		
+
 		private void Update()
 		{
 			if (GameManager.Instance.GameState == GameState.Playing)
@@ -139,16 +171,23 @@ namespace SplashyGame.Managers
 		{
 			gameScoreText.text = gameScore.ToString();
 		}
-		
+
+
 		private void OnDiamondScoreIncreased(int diamondScore)
 		{
 			SetDiamondText();
 		}
-		
+
 		public void MoveImageAnimation()
 		{
 			handImage.rectTransform.anchoredPosition = new Vector2(-356, -171);
 			handImage.rectTransform.DOAnchorPosX(moveDistance, moveDuration).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
+		}
+		public IEnumerator ResetPlatformCoroutine()
+		{
+
+			yield return LevelManager.Instance.ResetPlatforms();
+
 		}
 	}
 }

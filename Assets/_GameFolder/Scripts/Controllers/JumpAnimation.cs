@@ -7,7 +7,6 @@ namespace SplashyGame.Controllers
 {
 	public class JumpAnimation : MonoBehaviour
 	{
-
 		public Vector3 endPosition;
 
 		public Ease jumpEase;
@@ -18,33 +17,43 @@ namespace SplashyGame.Controllers
 		private float _totalJumpingTime;
 
 		private Tween _jumpAnimation;
-		
+
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameEnded += OnGameEnded;
+			GameManager.OnGameReseted += OnGameReseted;
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameEnded -= OnGameEnded;
+			GameManager.OnGameReseted -= OnGameReseted;
 		}
 
 		private void OnGameStarted()
 		{
 			Debug.Log($"Player jump animation script, on game started!");
-			
+
 			_totalJumpingTime = 0;
 
 			StartJumpAnimation();
 		}
-		
+
 		private void OnGameEnded(bool isSuccess)
 		{
-			
+
+			GameManager.Instance.GameState = GameState.End;
+			endPosition.z = 5f;
+			OnGameReseted();
 		}
-		
+		public void OnGameReseted()
+		{
+			Debug.Log("Enes");
+			transform.position = new Vector3(0f, 0.5f, 0f);
+
+		}
 		private void StartJumpAnimation()
 		{
 			_totalJumpingTime = 0;
@@ -55,7 +64,7 @@ namespace SplashyGame.Controllers
 
 			endPosition.z += 5f;
 
-			
+
 
 		}
 
@@ -99,7 +108,7 @@ namespace SplashyGame.Controllers
 			{
 				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
 				UIManager.Instance.gameScoreText.gameObject.SetActive(false);
-				
+
 				GameManager.Instance.OnGameEnd(true);
 			}
 		}
@@ -110,6 +119,7 @@ namespace SplashyGame.Controllers
 				_totalJumpingTime += Time.deltaTime * 1f;
 				if (_totalJumpingTime > duration + 0.1f)
 				{
+
 					GameManager.Instance.OnGameEnd(false);
 				}
 			}

@@ -1096,7 +1096,7 @@ MonoBehaviour:
   panel: {fileID: 1966306365}
   handImage: {fileID: 1646792861}
   moveDistance: 395
-  moveDuration: 2.5
+  moveDuration: 3
   BestScoreText: {fileID: 1935750460}
   gameScoreText: {fileID: 1231115344}
   LevelsButton: {fileID: 1801534595}
@@ -1106,7 +1106,8 @@ MonoBehaviour:
   levelText: {fileID: 796327431}
   levelPassedText: {fileID: 1364001738}
   whiteImage: {fileID: 1023723433}
-  sliderImage: {fileID: 1629292337}
+  sliderImage: {fileID: 1629292339}
+  diamondImage: {fileID: 334121261}
   levels: {fileID: 796327431}
 --- !u!1 &796327429
 GameObject:
@@ -1502,7 +1503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 1}
+  m_Color: {r: 0.9811321, g: 0.9811321, b: 0.9811321, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1633,6 +1634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ba1d94c1d90c24cae8dab7bef0419d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballTransform: {fileID: 869242509}
   gameScore: 0
 --- !u!4 &1184099124
 Transform:
@@ -2359,7 +2361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1629292336}
   - component: {fileID: 1629292338}
-  - component: {fileID: 1629292337}
+  - component: {fileID: 1629292339}
   m_Layer: 5
   m_Name: SliderImage
   m_TagString: Untagged
@@ -2391,7 +2393,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0.5716, y: -180}
   m_SizeDelta: {x: 547, y: 18}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1629292337
+--- !u!222 &1629292338
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629292335}
+  m_CullTransparentMesh: 1
+--- !u!114 &1629292339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2404,7 +2414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2421,14 +2431,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1629292338
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1629292335}
-  m_CullTransparentMesh: 1
 --- !u!1 &1630277819
 GameObject:
   m_ObjectHideFlags: 0
