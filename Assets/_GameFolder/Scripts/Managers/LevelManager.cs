@@ -1,9 +1,8 @@
+using System.Collections.Generic;
+using System.Collections;
+using SplashyGame.Controllers;
 using SplashyGame.Platforms;
 using UnityEngine;
-using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using SplashyGame.Movements;
 
 namespace SplashyGame.Managers
 {
@@ -13,7 +12,7 @@ namespace SplashyGame.Managers
 
 		public GameObject platformPrefab;
 
-		public PlayerHorizontal playerHorizontal;
+		public PlayerController playerController;
 
 		public const string NumberOfLevels = "LevelNumber";
 
@@ -135,7 +134,7 @@ namespace SplashyGame.Managers
 			{
 				Platform platform = _createdPlatforms[i];
 
-				if (platform.transform.position.z > playerHorizontal.childTransform.transform.position.z)
+				if (platform.transform.position.z > playerController.childTransform.transform.position.z)
 				{
 					platform.PlatformScalingColoringAnimation(targetColor);
 				}
@@ -144,13 +143,12 @@ namespace SplashyGame.Managers
 
 		public void IncreaseLevel()
 		{
-			
 			LevelNumber++;	
 		}
 
 		public float ReturnPlayerProgress()
 		{
-			var top = (playerHorizontal.childTransform.position.z - _firstPlatformPositionZ);
+			var top = (playerController.childTransform.position.z - _firstPlatformPositionZ);
 			var bottom = (_lastPlatformPositionZ - _firstPlatformPositionZ);
 			return top / bottom;
 		}

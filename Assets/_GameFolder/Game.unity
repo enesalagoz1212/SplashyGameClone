@@ -1027,7 +1027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformPrefab: {fileID: 8528569468860694605, guid: 4fd3918cf400fe84c980fa8352e73e79,
     type: 3}
-  playerHorizontal: {fileID: 1186186941}
+  playerController: {fileID: 1186186943}
   zPos: 5
   xMin: -2
   xMax: 2
@@ -1046,7 +1046,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &783669005
 GameObject:
@@ -1093,7 +1093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb64ad24a8a106428e3f67f31d4ad91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 869242509}
+  ball: {fileID: 0}
   panel: {fileID: 1966306365}
   handImage: {fileID: 1646792861}
   moveDistance: 395
@@ -1256,7 +1256,7 @@ GameObject:
   - component: {fileID: 869242509}
   - component: {fileID: 869242508}
   - component: {fileID: 869242507}
-  - component: {fileID: 869242511}
+  - component: {fileID: 869242513}
   - component: {fileID: 869242512}
   - component: {fileID: 869242506}
   m_Layer: 0
@@ -1344,23 +1344,6 @@ Transform:
   m_Father: {fileID: 1186186942}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &869242511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 869242505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4e155f9667f9644b884c105b7c4d427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  endPosition: {x: 0, y: -0.1, z: 5}
-  jumpEase: 1
-  jumpPower: 3
-  jumpCount: 1
-  duration: 0.7
 --- !u!54 &869242512
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1377,6 +1360,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &869242513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869242505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857d70e9afd05fe4e92e84c44709dd01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPosition: {x: 0, y: -0.1, z: 5}
+  jumpEase: 1
+  jumpPower: 3
+  jumpCount: 1
+  duration: 0.7
 --- !u!1 &969295643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1635,7 +1635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ba1d94c1d90c24cae8dab7bef0419d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballTransform: {fileID: 869242509}
   gameScore: 0
 --- !u!4 &1184099124
 Transform:
@@ -1650,7 +1649,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1184099125
 MonoBehaviour:
@@ -1675,7 +1674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1186186942}
-  - component: {fileID: 1186186941}
+  - component: {fileID: 1186186943}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Ball
@@ -1683,20 +1682,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1186186941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186186940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1758c628c5a3bdd43b6c579f305422c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  childTransform: {fileID: 869242509}
-  speed: 5
 --- !u!4 &1186186942
 Transform:
   m_ObjectHideFlags: 0
@@ -1713,6 +1698,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1186186943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186186940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7b9c3342598c245a988c33bb5746d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childTransform: {fileID: 869242509}
+  speed: 5
 --- !u!1 &1201535025
 GameObject:
   m_ObjectHideFlags: 0

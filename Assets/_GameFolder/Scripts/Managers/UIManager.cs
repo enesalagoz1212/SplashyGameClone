@@ -53,20 +53,18 @@ namespace SplashyGame.Managers
 
 		private void OnEnable()
 		{
-
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameEnded += OnGameEnded;
-			GameManager.OnGameReseted += OnGameReseted;
+			GameManager.OnGameReset += OnGameReseted;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased += OnDiamondScoreIncreased;
-
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameEnded -= OnGameEnded;
-			GameManager.OnGameReseted -= OnGameReseted;
+			GameManager.OnGameReset -= OnGameReseted;
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased -= OnDiamondScoreIncreased;
 		}

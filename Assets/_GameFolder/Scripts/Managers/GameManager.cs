@@ -14,7 +14,7 @@ namespace SplashyGame.Managers
 	public class GameManager : MonoBehaviour
 	{
 		public static GameManager Instance { get; private set; }
-		public Transform ballTransform;
+		
 		public const string BestScorePrefsString = "BestScore";
 		public const string DiamondScorePrefsString = "DiamondScore";
 
@@ -46,7 +46,7 @@ namespace SplashyGame.Managers
 
 		public static Action OnGameStarted;
 		public static Action<bool> OnGameEnded;
-		public static Action OnGameReseted;
+		public static Action OnGameReset;
 		public static Action<int> OnGameScoreIncreased;
 		public static Action<int> OnDiamondScoreIncreased;
 
@@ -80,7 +80,6 @@ namespace SplashyGame.Managers
 			switch (GameState)
 			{
 				case GameState.Start:
-
 					if (Input.GetMouseButtonDown(0))
 					{
 						OnGameStart();
@@ -88,28 +87,9 @@ namespace SplashyGame.Managers
 					break;
 
 				case GameState.Playing:
-
 					break;
-
-
+				
 				case GameState.End:
-					if (_isEndSuccess)
-					{
-						//OnGameEnd(true);
-
-					}
-					else
-					{
-						
-						
-							if (Input.GetMouseButtonDown(0))
-							{
-								OnGameStart();
-
-							}
-						
-						
-					}
 					break;
 
 				default:
@@ -117,7 +97,7 @@ namespace SplashyGame.Managers
 			}
 		}
 
-		public void OnGameStart()
+		private void OnGameStart()
 		{
 			GameState = GameState.Playing;
 			OnGameStarted?.Invoke();
@@ -137,29 +117,24 @@ namespace SplashyGame.Managers
 			{
 				BestScore = gameScore;
 			}
-
-
-
 		}
-
-		public void OnGameReset()
+		
+		public void OnGameResetAction()
 		{
 			GameState = GameState.End;
-			OnGameReseted?.Invoke();
-
+			OnGameReset?.Invoke();
 		}
+		
 		public void IncreaseGameScore(int increaseAmount)
 		{
 			gameScore += increaseAmount;
 			OnGameScoreIncreased?.Invoke(gameScore);
-		
 		}
 
 		public void IncreaseDiamondScore(int increase)
 		{
 			DiamondScore += increase;
 			OnDiamondScoreIncreased?.Invoke(DiamondScore);
-
 		}
 	}
 }

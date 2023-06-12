@@ -5,8 +5,8 @@ using DG.Tweening;
 
 namespace SplashyGame.Controllers
 {
-	public class JumpAnimation : MonoBehaviour
-	{
+    public class PlayerJumpController : MonoBehaviour
+    {
 		public Vector3 endPosition;
 
 		public Ease jumpEase;
@@ -18,18 +18,19 @@ namespace SplashyGame.Controllers
 
 		private Tween _jumpAnimation;
 		private bool _isEndSuccess;
+		
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameEnded += OnGameEnded;
-			GameManager.OnGameReseted += OnGameReseted;
+			GameManager.OnGameReset += OnGameReseted;
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameEnded -= OnGameEnded;
-			GameManager.OnGameReseted -= OnGameReseted;
+			GameManager.OnGameReset -= OnGameReseted;
 		}
 
 		private void OnGameStarted()
@@ -120,22 +121,22 @@ namespace SplashyGame.Controllers
 				GameManager.Instance.OnGameEnd(true);
 			}
 		}
-		public void AnimationTime()
+		
+		private void Update()
+		{
+			AnimationTime();
+		}
+
+		private void AnimationTime()
 		{
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
 				_totalJumpingTime += Time.deltaTime * 1f;
 				if (_totalJumpingTime > duration + 0.1f)
 				{
-
 					GameManager.Instance.OnGameEnd(false);
 				}
 			}
 		}
-		private void Update()
-		{
-			AnimationTime();
-		}
-		
-	}
+    }
 }
