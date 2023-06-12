@@ -91,12 +91,23 @@ namespace SplashyGame.Managers
 
 					break;
 
-				case GameState.End:
 
-					if (Input.GetMouseButtonDown(0))
+				case GameState.End:
+					if (_isEndSuccess)
+					{
+						//OnGameEnd(true);
+
+					}
+					else
 					{
 						
-						OnGameStart();
+						
+							if (Input.GetMouseButtonDown(0))
+							{
+								OnGameStart();
+
+							}
+						
 						
 					}
 					break;
@@ -121,13 +132,16 @@ namespace SplashyGame.Managers
 			_isEndSuccess = isSuccess;
 			GameState = GameState.End;
 			OnGameEnded?.Invoke(_isEndSuccess);
-			
+
 			if (gameScore > BestScore)
 			{
 				BestScore = gameScore;
 			}
+
+
+
 		}
-		
+
 		public void OnGameReset()
 		{
 			GameState = GameState.End;
@@ -138,6 +152,7 @@ namespace SplashyGame.Managers
 		{
 			gameScore += increaseAmount;
 			OnGameScoreIncreased?.Invoke(gameScore);
+		
 		}
 
 		public void IncreaseDiamondScore(int increase)

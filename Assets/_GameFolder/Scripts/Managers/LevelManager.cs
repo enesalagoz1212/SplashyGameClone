@@ -26,7 +26,7 @@ namespace SplashyGame.Managers
 
 		public Color targetColor;
 
-		int currentLevel = 0;
+		
 
 		private float _firstPlatformPositionZ;
 		private float _lastPlatformPositionZ;
@@ -56,6 +56,7 @@ namespace SplashyGame.Managers
 
 		private void Start()
 		{
+			LevelNumber = 1;
 
 			SpawnPrefabs();
 		}
@@ -143,8 +144,8 @@ namespace SplashyGame.Managers
 
 		public void IncreaseLevel()
 		{
-			currentLevel++;
-
+			
+			LevelNumber++;	
 		}
 
 		public float ReturnPlayerProgress()

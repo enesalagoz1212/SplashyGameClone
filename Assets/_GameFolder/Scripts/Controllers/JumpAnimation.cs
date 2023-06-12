@@ -17,7 +17,7 @@ namespace SplashyGame.Controllers
 		private float _totalJumpingTime;
 
 		private Tween _jumpAnimation;
-
+		private bool _isEndSuccess;
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
@@ -43,16 +43,24 @@ namespace SplashyGame.Controllers
 
 		private void OnGameEnded(bool isSuccess)
 		{
-
-			GameManager.Instance.GameState = GameState.End;
-			endPosition.z = 5f;
-			OnGameReseted();
+			_isEndSuccess = isSuccess;
+			if (!_isEndSuccess)
+			{
+				GameManager.Instance.GameState = GameState.End;
+				endPosition.z = 5f;
+				
+			}
+			else
+			{
+				
+			}
+			
 		}
 		public void OnGameReseted()
 		{
 			Debug.Log("Enes");
 			transform.position = new Vector3(0f, 0.5f, 0f);
-
+			
 		}
 		private void StartJumpAnimation()
 		{
@@ -128,5 +136,6 @@ namespace SplashyGame.Controllers
 		{
 			AnimationTime();
 		}
+		
 	}
 }
