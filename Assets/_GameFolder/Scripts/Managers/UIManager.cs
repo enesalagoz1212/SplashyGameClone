@@ -78,7 +78,7 @@ namespace SplashyGame.Managers
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
 			fullImage.fillAmount = 0f;
 
-			SetLevelText(LevelManager.LevelNumber); // DEGISECEK!
+			SetLevelText(); // DEGISECEK!
 
 			MoveImageAnimation();
 
