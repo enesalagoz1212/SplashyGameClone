@@ -9,6 +9,7 @@ namespace SplashyGame.Managers
 		Start = 0,
 		Playing = 1,
 		End = 2,
+		Reset = 3,
 	}
 
 	public class GameManager : MonoBehaviour
@@ -121,7 +122,7 @@ namespace SplashyGame.Managers
 		
 		public void OnGameResetAction()
 		{
-			GameState = GameState.End;
+			GameState = GameState.Reset;
 			OnGameReset?.Invoke();
 		}
 		

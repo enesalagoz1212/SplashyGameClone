@@ -10,7 +10,17 @@ namespace SplashyGame.Controllers
         public float speed;
         
         private float _firstTouchX;
-        
+
+        private void OnEnable()
+        {
+            GameManager.OnGameReset += OnGameReset;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnGameReset -= OnGameReset;
+        }
+
         private void Update()
         {
             switch (GameManager.Instance.GameState)
@@ -23,7 +33,6 @@ namespace SplashyGame.Controllers
                     break;
 				
                 case GameState.End:
-					
                     break;
 			
                 default:
@@ -41,13 +50,17 @@ namespace SplashyGame.Controllers
             else if(Input.GetMouseButton(0))
             {
                 float lastTouch = Input.mousePosition.x;
-                
-                diff = lastTouch-_firstTouchX;
+
+                diff = lastTouch - _firstTouchX;
                 transform.position += new Vector3(diff * Time.deltaTime * speed, 0, 0);
 
                 _firstTouchX = lastTouch;
             }
-
+        }
+        
+        private void OnGameReset()
+        {
+            transform.position = new Vector3(0f, 0.5f, 0f);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace SplashyGame.Managers
 		public static UIManager Instance { get; private set; }
 		
 
-		public Transform ball;
 		public GameObject panel;
 		public Image handImage;
 
@@ -37,8 +36,7 @@ namespace SplashyGame.Managers
 		public Image sliderImage;
 		public Image diamondImage;
 		public TMP_Text levels;
-
-		private bool _isEndSuccess;
+		
 		private void Awake()
 		{
 			if (Instance == null)
@@ -55,7 +53,7 @@ namespace SplashyGame.Managers
 		{
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameEnded += OnGameEnded;
-			GameManager.OnGameReset += OnGameReseted;
+			GameManager.OnGameReset += OnGameReset;
 			GameManager.OnGameScoreIncreased += OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased += OnDiamondScoreIncreased;
 		}
@@ -64,17 +62,17 @@ namespace SplashyGame.Managers
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameEnded -= OnGameEnded;
-			GameManager.OnGameReset -= OnGameReseted;
+			GameManager.OnGameReset -= OnGameReset;
 			GameManager.OnGameScoreIncreased -= OnGameScoreIncreased;
 			GameManager.OnDiamondScoreIncreased -= OnDiamondScoreIncreased;
 		}
 
 		private void Start()
 		{
-
-
 			BestScoreText.text = $"best score: {GameManager.BestScore}";
 			fullImage.fillAmount = 0f;
+			
+			whiteImage.gameObject.SetActive(false);
 
 			SetLevelText(); // DEGISECEK!
 
@@ -82,65 +80,21 @@ namespace SplashyGame.Managers
 
 			SetDiamondText();
 		}
-		public void OnGameReseted()
+		
+		private void Update()
 		{
-
-			StartCoroutine(ResetPlatformCoroutine());
-
-			
-			ball.transform.position = new Vector3(0, 0.5f, 0);
-		}
-		public void OnGameEnded(bool isSuccess)
-		{
-			_isEndSuccess = isSuccess;
-			if (!_isEndSuccess)
+			if (GameManager.Instance.GameState == GameState.Playing)
 			{
-
-				gameScoreText.gameObject.SetActive(false);
-				diamondText.gameObject.SetActive(false);
-				diamondImage.gameObject.SetActive(false);
-
-				whiteImage.gameObject.SetActive(true);
-			
-
-				levels.DOFade(0f, 0.9f).OnComplete(() =>
-				{
-
-					//sliderImage.gameObject.SetActive(false);
-					whiteImage.DOFade(255f, 3f).OnComplete(() =>
-					{
-
-						whiteImage.DOFade(0f, 1f);
-
-						panel.gameObject.SetActive(true);
-
-					});
-					diamondText.gameObject.SetActive(true);
-					diamondImage.gameObject.SetActive(true);
-
-					LevelsButton.gameObject.SetActive(true);
-					SettingButton.gameObject.SetActive(true);
-					BestScoreText.gameObject.SetActive(true);
-
-				});
-
-
-
-
+				fullImage.fillAmount = LevelManager.Instance.ReturnPlayerProgress();
+				// if (gameActive)
+				// {
+				// 	Debug.Log("decreasing");
+				// 	fullImage.fillAmount -= 1.02f / waitTime * Time.deltaTime;
+				// }
 
 			}
-			else
-			{
-				gameScoreText.gameObject.SetActive(false);
-				diamondText.gameObject.SetActive(false);
-				diamondImage.gameObject.SetActive(false);
-				whiteImage.gameObject.SetActive(true);
-			}
-
-
-			OnGameReseted();
-			
 		}
+		
 		private void OnGameStarted()
 		{
 			BestScoreText.gameObject.SetActive(false);
@@ -166,18 +120,39 @@ namespace SplashyGame.Managers
 			});
 		}
 
-		private void Update()
+		private void OnGameEnded(bool isSuccess)
 		{
-			if (GameManager.Instance.GameState == GameState.Playing)
-			{
-				fullImage.fillAmount = LevelManager.Instance.ReturnPlayerProgress();
-				// if (gameActive)
-				// {
-				// 	Debug.Log("decreasing");
-				// 	fullImage.fillAmount -= 1.02f / waitTime * Time.deltaTime;
-				// }
+			diamondImage.gameObject.SetActive(false);
+			gameScoreText.gameObject.SetActive(false);
+			
+			whiteImage.gameObject.SetActive(true);
 
-			}
+			var whiteImageColor = whiteImage.color;
+			whiteImageColor.a = 0f;
+			whiteImage.color = whiteImageColor;
+
+			// ORNEK OLARAK 1 SANIYE BEKLEME - DOTWEEN
+			DOVirtual.DelayedCall(1f, () =>
+			{
+				// BURAYA YAZDIKLARIMIZ, 1 SANIYE SONRASINDA CALISIR
+			});
+
+			StartCoroutine(OnGameEndCoroutine());
+		}
+
+		private IEnumerator OnGameEndCoroutine()
+		{
+			yield return new WaitForSeconds(1f);
+
+			whiteImage.DOFade(1f, 0.5f).OnComplete(() =>
+			{
+				GameManager.Instance.OnGameResetAction();
+			});
+		}
+		
+		private void OnGameReset()
+		{
+			
 		}
 
 		public void SetLevelText()
@@ -207,20 +182,7 @@ namespace SplashyGame.Managers
 			handImage.rectTransform.anchoredPosition = new Vector2(-356, -171);
 			handImage.rectTransform.DOAnchorPosX(moveDistance, moveDuration).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
 		}
-		public IEnumerator ResetPlatformCoroutine()
-		{
-
-			yield return LevelManager.Instance.ResetPlatforms();
-
-		}
 		
-		public void UiRestart()
-		{
-
-		}
-		public void UiEnd()
-		{
-
-		}
+		
 	}
 }

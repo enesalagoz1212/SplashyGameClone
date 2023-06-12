@@ -23,14 +23,14 @@ namespace SplashyGame.Controllers
 		{
 			GameManager.OnGameStarted += OnGameStarted;
 			GameManager.OnGameEnded += OnGameEnded;
-			GameManager.OnGameReset += OnGameReseted;
+			GameManager.OnGameReset += OnGameResetAction;
 		}
 
 		private void OnDisable()
 		{
 			GameManager.OnGameStarted -= OnGameStarted;
 			GameManager.OnGameEnded -= OnGameEnded;
-			GameManager.OnGameReset -= OnGameReseted;
+			GameManager.OnGameReset -= OnGameResetAction;
 		}
 
 		private void OnGameStarted()
@@ -51,18 +51,13 @@ namespace SplashyGame.Controllers
 				endPosition.z = 5f;
 				
 			}
-			else
-			{
-				
-			}
-			
 		}
-		public void OnGameReseted()
+
+		private void OnGameResetAction()
 		{
-			Debug.Log("Enes");
-			transform.position = new Vector3(0f, 0.5f, 0f);
-			
+			transform.localPosition = Vector3.zero;
 		}
+		
 		private void StartJumpAnimation()
 		{
 			_totalJumpingTime = 0;
@@ -72,9 +67,6 @@ namespace SplashyGame.Controllers
 			_jumpAnimation = transform.DOLocalJump(endPosition, jumpPower, jumpCount, duration).SetEase(jumpEase);
 
 			endPosition.z += 5f;
-
-
-
 		}
 
 

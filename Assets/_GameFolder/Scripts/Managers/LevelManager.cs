@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using SplashyGame.Controllers;
 using SplashyGame.Platforms;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SplashyGame.Managers
 {
@@ -40,6 +42,7 @@ namespace SplashyGame.Managers
 				PlayerPrefs.SetInt(NumberOfLevels, value);
 			}
 		}
+		
 		private void Awake()
 		{
 			// If there is an instance, and it's not me, delete myself.
@@ -51,6 +54,16 @@ namespace SplashyGame.Managers
 			{
 				Instance = this;
 			}
+		}
+
+		private void OnEnable()
+		{
+			GameManager.OnGameReset += OnGameReset;
+		}
+
+		private void OnDisable()
+		{
+			GameManager.OnGameReset -= OnGameReset;
 		}
 
 		private void Start()
@@ -152,17 +165,15 @@ namespace SplashyGame.Managers
 			var bottom = (_lastPlatformPositionZ - _firstPlatformPositionZ);
 			return top / bottom;
 		}
-
-		public IEnumerator ResetPlatforms()
+		
+		private void OnGameReset()
 		{
-			yield return new WaitForSeconds(2f);
-			for (int i = 0; i < _createdPlatforms.Count; i++)
+			for (var i = 0; i < _createdPlatforms.Count; i++)
 			{
 				Destroy(_createdPlatforms[i].gameObject);
 			}
 			_createdPlatforms.Clear();
 			SpawnPrefabs();
-
 		}
 	}
 }
