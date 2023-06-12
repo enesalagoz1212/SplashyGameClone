@@ -1,3 +1,4 @@
+using System;
 using SplashyGame.Managers;
 using SplashyGame.Platforms;
 using UnityEngine;
@@ -16,9 +17,16 @@ namespace SplashyGame.Controllers
 
 		private float _totalJumpingTime;
 
+		private Vector3 _initialEndPosition;
+
 		private Tween _jumpAnimation;
 		private bool _isEndSuccess;
-		
+
+		private void Awake()
+		{
+			_initialEndPosition = endPosition;
+		}
+
 		private void OnEnable()
 		{
 			GameManager.OnGameStarted += OnGameStarted;
@@ -49,13 +57,14 @@ namespace SplashyGame.Controllers
 			{
 				GameManager.Instance.GameState = GameState.End;
 				endPosition.z = 5f;
-				
 			}
 		}
 
 		private void OnGameResetAction()
 		{
 			transform.localPosition = Vector3.zero;
+
+			endPosition = _initialEndPosition;
 		}
 		
 		private void StartJumpAnimation()
@@ -107,27 +116,38 @@ namespace SplashyGame.Controllers
 
 			if (other.gameObject.CompareTag("Finish"))
 			{
-				UIManager.Instance.levelPassedText.gameObject.SetActive(true);
-				UIManager.Instance.gameScoreText.gameObject.SetActive(false);
-
 				GameManager.Instance.OnGameEnd(true);
 			}
 		}
 		
 		private void Update()
 		{
-			AnimationTime();
+			switch (GameManager.Instance.GameState)
+			{
+				case GameState.Start:
+					break;
+				
+				case GameState.Playing:
+					AnimationTime();
+					break;
+				
+				case GameState.End:
+					break;
+				
+				case GameState.Reset:
+					break;
+				
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 
 		private void AnimationTime()
 		{
-			if (GameManager.Instance.GameState == GameState.Playing)
+			_totalJumpingTime += Time.deltaTime * 1f;
+			if (_totalJumpingTime > duration + 0.1f)
 			{
-				_totalJumpingTime += Time.deltaTime * 1f;
-				if (_totalJumpingTime > duration + 0.1f)
-				{
-					GameManager.Instance.OnGameEnd(false);
-				}
+				GameManager.Instance.OnGameEnd(false);
 			}
 		}
     }

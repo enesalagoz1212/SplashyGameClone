@@ -34,7 +34,10 @@ namespace SplashyGame.Controllers
 				
                 case GameState.End:
                     break;
-			
+
+                case GameState.Reset:
+                    break;
+                
                 default:
                     throw new ArgumentOutOfRangeException();
             }

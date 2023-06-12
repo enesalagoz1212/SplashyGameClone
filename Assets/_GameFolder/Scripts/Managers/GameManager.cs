@@ -93,6 +93,9 @@ namespace SplashyGame.Managers
 				case GameState.End:
 					break;
 
+				case GameState.Reset:
+					break;
+				
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
@@ -119,10 +122,16 @@ namespace SplashyGame.Managers
 				BestScore = gameScore;
 			}
 		}
+
+		public void OnGameResetCompleted()
+		{
+			GameState = GameState.Start;
+		}
 		
 		public void OnGameResetAction()
 		{
 			GameState = GameState.Reset;
+			gameScore = 0;
 			OnGameReset?.Invoke();
 		}
 		

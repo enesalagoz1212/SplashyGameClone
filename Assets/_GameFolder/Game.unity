@@ -1032,7 +1032,7 @@ MonoBehaviour:
   zPos: 5
   xMin: -2
   xMax: 2
-  count: 30
+  count: 5
   targetColor: {r: 0.4039216, g: 0.30980393, b: 0, a: 1}
 --- !u!4 &697093745
 Transform:
@@ -1094,10 +1094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb64ad24a8a106428e3f67f31d4ad91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 1966306365}
-  handImage: {fileID: 1646792861}
-  moveDistance: 395
-  moveDuration: 3
+  uiTutorialController: {fileID: 1966306369}
   BestScoreText: {fileID: 1935750460}
   gameScoreText: {fileID: 1231115344}
   LevelsButton: {fileID: 1801534595}
@@ -2850,8 +2847,9 @@ GameObject:
   - component: {fileID: 1966306366}
   - component: {fileID: 1966306368}
   - component: {fileID: 1966306367}
+  - component: {fileID: 1966306369}
   m_Layer: 5
-  m_Name: HandParent
+  m_Name: HandTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2916,3 +2914,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966306365}
   m_CullTransparentMesh: 1
+--- !u!114 &1966306369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1966306365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d47c5e2826c6caa4fb2e60da630d0662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handRectTransform: {fileID: 1646792860}

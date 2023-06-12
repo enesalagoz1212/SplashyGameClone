@@ -11,14 +11,11 @@ namespace SplashyGame.Managers
 	public class UIManager : MonoBehaviour
 	{
 		public static UIManager Instance { get; private set; }
-		
 
-		public GameObject panel;
-		public Image handImage;
+		[Header("Ui Hand")] 
+		public UiTutorialController uiTutorialController;
 
-		public float moveDistance;
-		public float moveDuration;
-
+		[Header("Ui Text")]
 		public TextMeshProUGUI BestScoreText;
 		public TMP_Text gameScoreText;
 
@@ -26,7 +23,6 @@ namespace SplashyGame.Managers
 		public Button SettingButton;
 
 		public Image fullImage;
-		//public float waitTime = 21.36f;
 
 		public TextMeshProUGUI diamondText;
 		public TextMeshProUGUI levelText;
@@ -69,14 +65,19 @@ namespace SplashyGame.Managers
 
 		private void Start()
 		{
-			BestScoreText.text = $"best score: {GameManager.BestScore}";
 			fullImage.fillAmount = 0f;
 			
 			whiteImage.gameObject.SetActive(false);
+			
+			LevelsButton.gameObject.SetActive(true);
+			
+			uiTutorialController.ActivationOfObject(true);
+			
+			gameScoreText.gameObject.SetActive(false);
 
+			SetGameScoreText();
+			SetBestScoreText();
 			SetLevelText(); // DEGISECEK!
-
-			MoveImageAnimation();
 
 			SetDiamondText();
 		}
@@ -86,12 +87,6 @@ namespace SplashyGame.Managers
 			if (GameManager.Instance.GameState == GameState.Playing)
 			{
 				fullImage.fillAmount = LevelManager.Instance.ReturnPlayerProgress();
-				// if (gameActive)
-				// {
-				// 	Debug.Log("decreasing");
-				// 	fullImage.fillAmount -= 1.02f / waitTime * Time.deltaTime;
-				// }
-
 			}
 		}
 		
@@ -99,25 +94,14 @@ namespace SplashyGame.Managers
 		{
 			BestScoreText.gameObject.SetActive(false);
 			gameScoreText.gameObject.SetActive(true);
-
-
-			//sliderImage.gameObject.SetActive(true);
-
-			gameScoreText.text = GameManager.Instance.gameScore.ToString();
-
+			
+			SetGameScoreText();
 			SetDiamondText();
-
-			// // // // 
-
+			
 			LevelsButton.gameObject.SetActive(false);
 			SettingButton.gameObject.SetActive(false);
 
-			handImage.DOFade(0f, 0.5f).OnComplete(() =>
-			{
-
-				panel.transform.localScale = Vector3.zero;
-
-			});
+			uiTutorialController.OnGameStarted();
 		}
 
 		private void OnGameEnded(bool isSuccess)
@@ -137,6 +121,11 @@ namespace SplashyGame.Managers
 				// BURAYA YAZDIKLARIMIZ, 1 SANIYE SONRASINDA CALISIR
 			});
 
+			if (isSuccess)
+			{
+				levelPassedText.gameObject.SetActive(true);
+			}
+
 			StartCoroutine(OnGameEndCoroutine());
 		}
 
@@ -152,12 +141,42 @@ namespace SplashyGame.Managers
 		
 		private void OnGameReset()
 		{
+			fullImage.fillAmount = 0f;
 			
+			levelPassedText.gameObject.SetActive(false);
+			
+			diamondImage.gameObject.SetActive(true);
+			BestScoreText.gameObject.SetActive(true);
+			SetBestScoreText();
+			
+			LevelsButton.gameObject.SetActive(true);
+
+			SettingButton.gameObject.SetActive(true);
+			
+			uiTutorialController.ActivationOfObject(true);
+
+			DOVirtual.DelayedCall(1f, () =>
+			{
+				SetGameScoreText();
+				whiteImage.DOFade(0f, 0.5f).OnComplete(() =>
+				{
+					GameManager.Instance.OnGameResetCompleted();
+				});
+			});
+		}
+		
+		private void SetGameScoreText()
+		{
+			gameScoreText.text = GameManager.Instance.gameScore.ToString();
+		}
+
+		private void SetBestScoreText()
+		{
+			BestScoreText.text = $"best score: {GameManager.BestScore}";
 		}
 
 		public void SetLevelText()
 		{
-			
 			levelText.text = $"LEVEL  {LevelManager.LevelNumber.ToString()}";
 		}
 
@@ -171,18 +190,9 @@ namespace SplashyGame.Managers
 			gameScoreText.text = gameScore.ToString();
 		}
 
-
 		private void OnDiamondScoreIncreased(int diamondScore)
 		{
 			SetDiamondText();
 		}
-
-		public void MoveImageAnimation()
-		{
-			handImage.rectTransform.anchoredPosition = new Vector2(-356, -171);
-			handImage.rectTransform.DOAnchorPosX(moveDistance, moveDuration).SetEase(Ease.InOutQuad).SetLoops(-1, LoopType.Yoyo);
-		}
-		
-		
 	}
 }
