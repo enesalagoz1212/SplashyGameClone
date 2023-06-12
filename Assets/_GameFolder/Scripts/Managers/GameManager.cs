@@ -18,7 +18,7 @@ namespace SplashyGame.Managers
 		
 		public const string BestScorePrefsString = "BestScore";
 		public const string DiamondScorePrefsString = "DiamondScore";
-
+		public const string LevelPrefsString = "LevelNumber";
 
 		public static int DiamondScore
 		{
@@ -40,6 +40,17 @@ namespace SplashyGame.Managers
 			set
 			{
 				PlayerPrefs.SetInt(BestScorePrefsString, value);
+			}
+		}
+		public static int LevelNumber
+		{
+			get
+			{
+				return PlayerPrefs.GetInt(LevelPrefsString, 1);
+			}
+			set
+			{
+				PlayerPrefs.SetInt(LevelPrefsString, value);
 			}
 		}
 
@@ -120,6 +131,11 @@ namespace SplashyGame.Managers
 			if (gameScore > BestScore)
 			{
 				BestScore = gameScore;
+			}
+
+			if (isSuccess)
+			{
+				LevelNumber++;
 			}
 		}
 

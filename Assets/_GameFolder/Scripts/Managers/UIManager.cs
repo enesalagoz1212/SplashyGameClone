@@ -148,7 +148,7 @@ namespace SplashyGame.Managers
 			diamondImage.gameObject.SetActive(true);
 			BestScoreText.gameObject.SetActive(true);
 			SetBestScoreText();
-			
+
 			LevelsButton.gameObject.SetActive(true);
 
 			SettingButton.gameObject.SetActive(true);
@@ -158,6 +158,8 @@ namespace SplashyGame.Managers
 			DOVirtual.DelayedCall(1f, () =>
 			{
 				SetGameScoreText();
+				SetLevelText();
+
 				whiteImage.DOFade(0f, 0.5f).OnComplete(() =>
 				{
 					GameManager.Instance.OnGameResetCompleted();
@@ -177,7 +179,8 @@ namespace SplashyGame.Managers
 
 		public void SetLevelText()
 		{
-			levelText.text = $"LEVEL  {LevelManager.LevelNumber.ToString()}";
+			levelText.text = $"LEVEL  {GameManager.LevelNumber.ToString()}";
+			levelPassedText.text = $"LEVEL {GameManager.LevelNumber.ToString()} PASSED!";
 		}
 
 		private void SetDiamondText()
